@@ -7,37 +7,18 @@ from sensora.discovery.base import BaseScanner
 
 
 class Scanner:
-    """
-    Coordinates all registered discovery scanners.
-
-    Example:
-        scanner = Scanner()
-        scanner.register(I2CScanner())
-        scanner.register(SPIScanner())
-
-        devices = scanner.scan_all()
-    """
+    """Coordinates all registered discovery scanners."""
 
     def __init__(self) -> None:
-        """Initialize an empty scanner registry."""
         self._scanners: list[BaseScanner] = []
 
     def register(self, scanner: BaseScanner) -> None:
-        """
-        Register a discovery scanner.
-
-        Args:
-            scanner: A scanner implementing BaseScanner.
-        """
+        """Register a discovery scanner."""
         self._scanners.append(scanner)
 
-    def scan_all(self) -> list[Device]:
-        """
-        Run every registered scanner.
+    def scan(self) -> list[Device]:
+        """Run all registered scanners."""
 
-        Returns:
-            A list containing all discovered devices.
-        """
         devices: list[Device] = []
 
         for scanner in self._scanners:
