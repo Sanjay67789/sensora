@@ -3,78 +3,247 @@
   "title": "Sensora Device Definition",
   "description": "Schema for Sensora hardware device definitions.",
   "type": "object",
+  "additionalProperties": false,
 
   "required": [
     "id",
     "name",
     "vendor",
-    "buses",
-    "addresses",
-    "driver_module"
+    "interfaces",
+    "identification",
+    "driver"
   ],
 
   "properties": {
     "id": {
       "type": "string",
+      "description": "Unique device identifier.",
       "pattern": "^[a-z0-9_]+$"
     },
 
     "name": {
       "type": "string",
+      "description": "Human-readable device name.",
       "minLength": 1
     },
 
     "vendor": {
-      "type": "string"
-    },
-
-    "buses": {
-      "type": "array",
-      "minItems": 1,
-      "uniqueItems": true,
-      "items": {
-        "type": "string",
-        "enum": [
-          "i2c",
-          "spi",
-          "uart",
-          "onewire",
-          "can",
-          "usb",
-          "gpio"
-        ]
-      }
-    },
-
-    "addresses": {
-      "type": "array",
-      "uniqueItems": true,
-      "items": {
-        "type": "integer",
-        "minimum": 0,
-        "maximum": 127
-      }
-    },
-
-    "chip_id": {
-      "type": [
-        "string",
-        "null"
-      ]
-    },
-
-    "driver_module": {
-      "type": "string"
+      "type": "string",
+      "description": "Vendor identifier."
     },
 
     "description": {
       "type": "string"
     },
 
-    "metadata": {
-      "type": "object"
-    }
-  },
+    "interfaces": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "supported": {
+            "type": "boolean",
+            "default": true
+          },
 
-  "additionalProperties": false
+          "addresses": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^0x[0-9A-Fa-f]{1,2}$"
+            }
+          },
+
+          "speed": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+
+    "identification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method"
+      ],
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "register",
+            "command",
+            "usb_vid_pid",
+            "can",
+            "manual"
+          ]
+        },
+
+        "register": {
+          "type": "string",
+          "pattern": "^0x[0-9A-Fa-f]+$"
+        },
+
+        "expected": {
+          "type": "string",
+          "pattern": "^0x[0-9A-Fa-f]+$"
+        },
+
+        "width": {
+          "type": "integer",
+          "enum": [
+            8,
+            16,
+            32
+          ]
+        }
+      }
+    },
+
+    "driver": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "module",
+        "class"
+      ],
+      "properties": {
+        "module": {
+          "type": "string"
+        },
+
+        "class": {
+          "type": "string"
+        }
+      }
+    },
+
+    "linux": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "subsystem": {
+          "type": "string"
+        },
+
+        "kernel_driver": {
+          "type": "string"
+        },
+
+        "compatible": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+
+    "measurements": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+
+    "electrical": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "voltage": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+
+            "max": {
+              "type": "number"
+            },
+
+            "unit": {
+              "type": "string",
+              "const": "V"
+            }
+          }
+        },
+
+        "current": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "typical": {
+              "type": "number"
+            },
+
+            "maximum": {
+              "type": "number"
+            },
+
+            "unit": {
+              "type": "string",
+              "const": "mA"
+            }
+          }
+        }
+      }
+    },
+
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+
+        "pins": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+
+    "features": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "boolean"
+      }
+    },
+
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "datasheet": {
+          "type": "string",
+          "format": "uri"
+        },
+
+        "homepage": {
+          "type": "string",
+          "format": "uri"
+        },
+
+        "family": {
+          "type": "string"
+        },
+
+        "category": {
+          "type": "string"
+        },
+
+        "revision": {
+          "type": "string"
+        }
+      }
+    }
+  }
 }

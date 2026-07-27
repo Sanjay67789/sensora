@@ -7,8 +7,6 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from sensora.core.enums import BusType
-
 
 @dataclass(slots=True, frozen=True)
 class VendorDefinition:
@@ -16,11 +14,10 @@ class VendorDefinition:
     Represents a hardware manufacturer.
     """
 
-    vendor_id: str
+    id: str
     name: str
 
-    website: str = ""
-    country: str = ""
+    description: str = ""
 
     metadata: dict[str, Any] = field(default_factory=dict)
 
@@ -31,33 +28,41 @@ class DeviceDefinition:
     Represents a supported hardware device.
     """
 
-    # Stable unique identifier.
-    # Example: "bosch.bme280"
-    device_id: str
+    # Unique device identifier.
+    id: str
 
-    # Human-readable name.
-    # Example: "BME280"
+    # Human-readable device name.
     name: str
 
     # Vendor identifier.
-    # Example: "bosch"
     vendor: str
-
-    # Supported communication buses.
-    buses: tuple[BusType, ...]
-
-    # Valid device addresses (if applicable).
-    addresses: tuple[int, ...] = ()
-
-    # Optional identification register value.
-    chip_id: int | None = None
-
-    # Python module implementing the driver.
-    # Example: "bosch.bme280"
-    driver_module: str | None = None
 
     # Human-readable description.
     description: str = ""
 
-    # Additional device information.
+    # Supported interfaces.
+    interfaces: dict[str, Any] = field(default_factory=dict)
+
+    # Device identification information.
+    identification: dict[str, Any] = field(default_factory=dict)
+
+    # Driver information.
+    driver: dict[str, Any] = field(default_factory=dict)
+
+    # Linux-specific metadata.
+    linux: dict[str, Any] = field(default_factory=dict)
+
+    # Supported measurements.
+    measurements: list[str] = field(default_factory=list)
+
+    # Electrical characteristics.
+    electrical: dict[str, Any] = field(default_factory=dict)
+
+    # Physical package information.
+    package: dict[str, Any] = field(default_factory=dict)
+
+    # Device capabilities.
+    features: dict[str, bool] = field(default_factory=dict)
+
+    # Optional metadata.
     metadata: dict[str, Any] = field(default_factory=dict)

@@ -1,21 +1,35 @@
 """
-Loads hardware definitions into the Sensora database.
+Loads vendor and device definitions into the Sensora registry.
 """
 
 from __future__ import annotations
 
 from pathlib import Path
 
+from sensora.database.factory import DefinitionFactory
+from sensora.database.parser import YamlParser
 from sensora.database.registry import DeviceRegistry
+from sensora.database.validator import SchemaValidator
+
+VENDORS_DIRECTORY = "vendors"
+DEVICES_DIRECTORY = "devices"
+SCHEMAS_DIRECTORY = "schemas"
 
 
 class DatabaseLoader:
     """
-    Loads vendor and device definitions from the filesystem.
+    Loads all hardware definitions into an in-memory registry.
     """
 
-    def __init__(self, definitions_path: Path | str = "definitions") -> None:
-        self._definitions_path = Path(definitions_path)
+    def __init__(
+        self,
+        definitions_path: Path | str = "definitions",
+    ) -> None:
+        self._definitions_path = Path(definitions_path).resolve()
+
+        self._parser = YamlParser()
+        self._validator = SchemaValidator(self.schemas_path)
+        self._factory = DefinitionFactory()
 
     @property
     def definitions_path(self) -> Path:
@@ -27,70 +41,127 @@ class DatabaseLoader:
     @property
     def vendors_path(self) -> Path:
         """
-        Vendor definition directory.
+        Vendor definitions directory.
         """
-        return self._definitions_path / "vendors"
+        return self.definitions_path / VENDORS_DIRECTORY
 
     @property
     def devices_path(self) -> Path:
         """
-        Device definition directory.
+        Device definitions directory.
         """
-        return self._definitions_path / "devices"
+        return self.definitions_path / DEVICES_DIRECTORY
 
     @property
     def schemas_path(self) -> Path:
         """
-        Schema definition directory.
+        JSON schema directory.
         """
-        return self._definitions_path / "schemas"
+        return self.definitions_path / SCHEMAS_DIRECTORY
+
+    # ------------------------------------------------------------------
+    # Public API
+    # ------------------------------------------------------------------
 
     def load(self) -> DeviceRegistry:
         """
-        Load all hardware definitions.
+        Load every vendor and device definition.
 
         Returns
         -------
         DeviceRegistry
-            Registry containing all loaded definitions.
+            Populated registry.
         """
+        self._validate_directory_structure()
+
         registry = DeviceRegistry()
 
-        self._load_vendors(registry)
-        self._load_devices(registry)
+        self._load_vendor_definitions(registry)
+        self._load_device_definitions(registry)
 
         return registry
 
     # ------------------------------------------------------------------
-    # Internal loading methods
+    # Validation
     # ------------------------------------------------------------------
 
-    def _load_vendors(self, registry: DeviceRegistry) -> None:
+    def _validate_directory_structure(self) -> None:
         """
-        Load all vendor definitions.
+        Validate the expected directory structure.
         """
-        if not self.vendors_path.exists():
-            return
+        required = (
+            self.definitions_path,
+            self.vendors_path,
+            self.devices_path,
+            self.schemas_path,
+        )
 
-        for _file in sorted(self.vendors_path.glob("*.yaml")):
-            # TODO:
-            # Parse YAML
-            # Validate schema
-            # Create VendorDefinition
-            # registry.register_vendor(...)
-            pass
+        for directory in required:
+            if not directory.is_dir():
+                raise FileNotFoundError(f"Directory not found: {directory}")
 
-    def _load_devices(self, registry: DeviceRegistry) -> None:
-        """
-        Load all device definitions.
-        """
-        if not self.devices_path.exists():
-            return
+    # ------------------------------------------------------------------
+    # Vendor loading
+    # ------------------------------------------------------------------
 
-        for _file in sorted(self.devices_path.rglob("*.yaml")):
-            # TODO:
-            # Parse YAML
-            # Validate schema
-            # Create DeviceDefinition
-            # registry.register_device(...)
-            pass
+    def _load_vendor_definitions(
+        self,
+        registry: DeviceRegistry,
+    ) -> None:
+        """
+        Load every vendor definition.
+        """
+        for file_path in sorted(self.vendors_path.glob("*.yaml")):
+            self._load_vendor_definition(
+                file_path,
+                registry,
+            )
+
+    def _load_vendor_definition(
+        self,
+        file_path: Path,
+        registry: DeviceRegistry,
+    ) -> None:
+        """
+        Load a single vendor definition.
+        """
+        definition = self._parser.load(file_path)
+
+        self._validator.validate_vendor(definition)
+
+        vendor = self._factory.create_vendor(definition)
+
+        registry.register_vendor(vendor)
+
+    # ------------------------------------------------------------------
+    # Device loading
+    # ------------------------------------------------------------------
+
+    def _load_device_definitions(
+        self,
+        registry: DeviceRegistry,
+    ) -> None:
+        """
+        Load every device definition.
+        """
+        for file_path in sorted(self.devices_path.rglob("*.yaml")):
+            self._load_device_definition(
+                file_path,
+                registry,
+            )
+
+    def _load_device_definition(
+        self,
+        file_path: Path,
+        registry: DeviceRegistry,
+    ) -> None:
+        """
+        Load a single device definition.
+        """
+        definition = self._parser.load(file_path)
+
+        self._validator.validate_device(definition)
+
+        device = self._factory.create_device(definition)
+
+        registry.register_device(device)

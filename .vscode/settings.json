@@ -8,12 +8,13 @@
     },
 
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+    "python.terminal.activateEnvironment": true,
 
     "python.analysis.extraPaths": [
         "${workspaceFolder}"
     ],
-
     "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.autoImportCompletions": true,
 
     "editor.formatOnSave": true,
 
@@ -29,8 +30,9 @@
 
     "files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
+    "files.eol": "\n",
 
-    "editor.rulers": [88],
-
-    "files.eol": "\n"
+    "editor.rulers": [
+        88
+    ]
 }
