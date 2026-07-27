@@ -1,73 +1,179 @@
 """
-Factory for creating Sensora database models from validated definitions.
+Factory classes for creating Sensora database models.
 """
 
 from __future__ import annotations
 
 from typing import Any
 
-from sensora.database.models import DeviceDefinition, VendorDefinition
+from sensora.database.models import (
+    DeviceDefinition,
+    VendorDefinition,
+)
 
 
 class DefinitionFactory:
     """
-    Factory responsible for creating database model instances.
-
-    The input dictionaries are assumed to have already been validated
-    against the appropriate JSON Schema.
+    Creates database objects from parsed YAML data.
     """
+
+    # ------------------------------------------------------------------
+    # Vendor
+    # ------------------------------------------------------------------
 
     def create_vendor(
         self,
-        definition: dict[str, Any],
+        data: dict[str, Any],
     ) -> VendorDefinition:
         """
-        Create a VendorDefinition.
-
-        Parameters
-        ----------
-        definition
-            Validated vendor definition.
-
-        Returns
-        -------
-        VendorDefinition
+        Create a VendorDefinition object.
         """
+
         return VendorDefinition(
-            id=definition["id"],
-            name=definition["name"],
-            description=definition.get("description", ""),
-            metadata=definition.get("metadata", {}),
+            id=data["id"],
+            name=data["name"],
+            description=data.get(
+                "description",
+                "",
+            ),
+            metadata=data.get(
+                "metadata",
+                {},
+            ),
         )
+
+    # ------------------------------------------------------------------
+    # Device
+    # ------------------------------------------------------------------
 
     def create_device(
         self,
-        definition: dict[str, Any],
+        data: dict[str, Any],
     ) -> DeviceDefinition:
         """
-        Create a DeviceDefinition.
+        Create a DeviceDefinition object.
 
-        Parameters
-        ----------
-        definition
-            Validated device definition.
+        Supports:
 
-        Returns
-        -------
-        DeviceDefinition
+        New format:
+            interfaces
+            identification
+            driver
+
+        Legacy format:
+            buses
+            addresses
+            chip_id
+            driver_module
         """
+
         return DeviceDefinition(
-            id=definition["id"],
-            name=definition["name"],
-            vendor=definition["vendor"],
-            description=definition.get("description", ""),
-            interfaces=definition["interfaces"],
-            identification=definition["identification"],
-            driver=definition["driver"],
-            linux=definition.get("linux", {}),
-            measurements=definition.get("measurements", []),
-            electrical=definition.get("electrical", {}),
-            package=definition.get("package", {}),
-            features=definition.get("features", {}),
-            metadata=definition.get("metadata", {}),
+            id=data["id"],
+            name=data["name"],
+            vendor=data["vendor"],
+            description=data.get(
+                "description",
+                "",
+            ),
+            interfaces=self._interfaces(data),
+            identification=self._identification(data),
+            driver=self._driver(data),
+            linux=data.get(
+                "linux",
+                {},
+            ),
+            measurements=data.get(
+                "measurements",
+                [],
+            ),
+            electrical=data.get(
+                "electrical",
+                {},
+            ),
+            package=data.get(
+                "package",
+                {},
+            ),
+            features=data.get(
+                "features",
+                {},
+            ),
+            metadata=data.get(
+                "metadata",
+                {},
+            ),
         )
+
+    # ------------------------------------------------------------------
+    # Compatibility conversion
+    # ------------------------------------------------------------------
+
+    def _interfaces(
+        self,
+        data: dict[str, Any],
+    ) -> dict[str, Any]:
+        """
+        Convert legacy bus definitions.
+        """
+
+        if "interfaces" in data:
+            return data["interfaces"]
+
+        interfaces: dict[str, Any] = {}
+
+        for bus in data.get(
+            "buses",
+            [],
+        ):
+            interfaces[bus] = {
+                "supported": True,
+                "addresses": data.get(
+                    "addresses",
+                    [],
+                ),
+            }
+
+        return interfaces
+
+    def _identification(
+        self,
+        data: dict[str, Any],
+    ) -> dict[str, Any]:
+        """
+        Convert legacy chip_id definition.
+        """
+
+        if "identification" in data:
+            return data["identification"]
+
+        if "chip_id" in data:
+            return {
+                "method": "register",
+                "expected": data["chip_id"],
+            }
+
+        return {
+            "method": "manual",
+        }
+
+    def _driver(
+        self,
+        data: dict[str, Any],
+    ) -> dict[str, Any]:
+        """
+        Convert legacy driver_module definition.
+        """
+
+        if "driver" in data:
+            return data["driver"]
+
+        return {
+            "module": data.get(
+                "driver_module",
+                "",
+            ),
+            "class": data.get(
+                "name",
+                "",
+            ),
+        }

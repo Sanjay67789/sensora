@@ -1,249 +1,387 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+
   "title": "Sensora Device Definition",
-  "description": "Schema for Sensora hardware device definitions.",
+
+  "description": "Flexible hardware definition schema for Sensora.",
+
   "type": "object",
+
   "additionalProperties": false,
+
 
   "required": [
     "id",
     "name",
-    "vendor",
-    "interfaces",
-    "identification",
-    "driver"
+    "vendor"
   ],
 
+
   "properties": {
+
+
     "id": {
       "type": "string",
-      "description": "Unique device identifier.",
       "pattern": "^[a-z0-9_]+$"
     },
 
+
     "name": {
-      "type": "string",
-      "description": "Human-readable device name.",
-      "minLength": 1
-    },
-
-    "vendor": {
-      "type": "string",
-      "description": "Vendor identifier."
-    },
-
-    "description": {
       "type": "string"
     },
 
-    "interfaces": {
-      "type": "object",
-      "minProperties": 1,
-      "additionalProperties": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "supported": {
-            "type": "boolean",
-            "default": true
-          },
 
-          "addresses": {
-            "type": "array",
-            "uniqueItems": true,
-            "items": {
-              "type": "string",
-              "pattern": "^0x[0-9A-Fa-f]{1,2}$"
-            }
-          },
-
-          "speed": {
-            "type": "integer",
-            "minimum": 1
-          }
-        }
-      }
+    "vendor": {
+      "type": "string"
     },
 
-    "identification": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "method"
-      ],
-      "properties": {
-        "method": {
-          "type": "string",
-          "enum": [
-            "register",
-            "command",
-            "usb_vid_pid",
-            "can",
-            "manual"
-          ]
-        },
 
-        "register": {
-          "type": "string",
-          "pattern": "^0x[0-9A-Fa-f]+$"
-        },
-
-        "expected": {
-          "type": "string",
-          "pattern": "^0x[0-9A-Fa-f]+$"
-        },
-
-        "width": {
-          "type": "integer",
-          "enum": [
-            8,
-            16,
-            32
-          ]
-        }
-      }
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
     },
 
-    "driver": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "module",
-        "class"
-      ],
-      "properties": {
-        "module": {
-          "type": "string"
-        },
 
-        "class": {
-          "type": "string"
-        }
-      }
-    },
+    "buses": {
 
-    "linux": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "subsystem": {
-          "type": "string"
-        },
+      "oneOf": [
 
-        "kernel_driver": {
-          "type": "string"
-        },
-
-        "compatible": {
+        {
           "type": "array",
           "items": {
             "type": "string"
-          },
-          "uniqueItems": true
+          }
+        },
+
+        {
+          "type": "null"
         }
-      }
+
+      ]
+
     },
+
+
+    "addresses": {
+
+      "oneOf": [
+
+        {
+          "type": "array",
+
+          "items": {
+            "type": "string"
+          }
+
+        },
+
+
+        {
+          "type": "object",
+
+          "additionalProperties": {
+
+            "oneOf": [
+
+              {
+                "type": "array",
+
+                "items": {
+                  "type": "string"
+                }
+
+              },
+
+
+              {
+                "type": "string"
+              }
+
+            ]
+
+          }
+
+        },
+
+
+        {
+          "type": "null"
+        }
+
+      ]
+
+    },
+
+
+    "chip_id": {
+
+      "oneOf": [
+
+        {
+          "type": "string"
+        },
+
+
+        {
+          "type": "object",
+
+          "additionalProperties": {
+
+            "type": "string"
+
+          }
+
+        },
+
+
+        {
+          "type": "null"
+        }
+
+      ]
+
+    },
+
+
+    "driver_module": {
+
+      "type": [
+        "string",
+        "null"
+      ]
+
+    },
+
+
+    "interfaces": {
+
+      "oneOf": [
+
+        {
+          "type": "object",
+
+          "additionalProperties": true
+
+        },
+
+
+        {
+          "type": "null"
+        }
+
+      ]
+
+    },
+
+
+    "identification": {
+
+      "oneOf": [
+
+        {
+          "type": "object",
+
+          "additionalProperties": true
+
+        },
+
+
+        {
+          "type": "null"
+        }
+
+      ]
+
+    },
+
+
+    "driver": {
+
+      "oneOf": [
+
+        {
+          "type": "object",
+
+          "additionalProperties": true
+
+        },
+
+
+        {
+          "type": "null"
+        }
+
+      ]
+
+    },
+
+
+    "linux": {
+
+      "oneOf": [
+
+        {
+          "type": "object",
+
+          "additionalProperties": true
+
+        },
+
+
+        {
+          "type": "null"
+        }
+
+      ]
+
+    },
+
 
     "measurements": {
-      "type": "array",
-      "uniqueItems": true,
-      "items": {
-        "type": "string"
-      }
+
+      "oneOf": [
+
+        {
+          "type": "array",
+
+          "items": {
+            "type": "string"
+          }
+
+        },
+
+
+        {
+          "type": "null"
+        }
+
+      ]
+
     },
+
 
     "electrical": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "voltage": {
+
+      "oneOf": [
+
+        {
           "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "min": {
-              "type": "number"
-            },
 
-            "max": {
-              "type": "number"
-            },
+          "additionalProperties": true
 
-            "unit": {
-              "type": "string",
-              "const": "V"
-            }
-          }
         },
 
-        "current": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "typical": {
-              "type": "number"
-            },
 
-            "maximum": {
-              "type": "number"
-            },
-
-            "unit": {
-              "type": "string",
-              "const": "mA"
-            }
-          }
+        {
+          "type": "null"
         }
-      }
+
+      ]
+
     },
+
 
     "package": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "type": {
+
+      "oneOf": [
+
+        {
           "type": "string"
         },
 
-        "pins": {
-          "type": "integer",
-          "minimum": 1
+
+        {
+          "type": "object"
+        },
+
+
+        {
+          "type": "null"
         }
-      }
+
+      ]
+
     },
+
 
     "features": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "boolean"
-      }
+
+      "oneOf": [
+
+        {
+          "type": "array",
+
+          "items": {
+            "type": "string"
+          }
+
+        },
+
+
+        {
+          "type": "object",
+
+          "additionalProperties": true
+
+        },
+
+
+        {
+          "type": "null"
+        }
+
+      ]
+
     },
 
+
     "metadata": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "datasheet": {
-          "type": "string",
-          "format": "uri"
+
+      "oneOf": [
+
+        {
+          "type": "object",
+
+          "additionalProperties": true
+
         },
 
-        "homepage": {
-          "type": "string",
-          "format": "uri"
-        },
 
-        "family": {
-          "type": "string"
-        },
-
-        "category": {
-          "type": "string"
-        },
-
-        "revision": {
-          "type": "string"
+        {
+          "type": "null"
         }
-      }
+
+      ]
+
     }
-  }
+
+  },
+
+
+  "anyOf": [
+
+    {
+      "required": [
+        "interfaces"
+      ]
+    },
+
+
+    {
+      "required": [
+        "buses"
+      ]
+    },
+
+
+    {
+      "required": [
+        "addresses"
+      ]
+    }
+
+  ]
+
 }

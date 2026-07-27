@@ -1,0 +1,14 @@
+id: stmicroelectronics
+
+name: STMicroelectronics
+
+description: >
+  Semiconductor manufacturer providing sensors,
+  microcontrollers, and embedded solutions.
+
+website: https://www.st.com
+
+country: Switzerland
+
+metadata:
+  category: semiconductor

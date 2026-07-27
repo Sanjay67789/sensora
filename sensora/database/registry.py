@@ -30,16 +30,6 @@ class DeviceRegistry:
     def register_vendor(self, vendor: VendorDefinition) -> None:
         """
         Register a vendor.
-
-        Parameters
-        ----------
-        vendor
-            Vendor definition to register.
-
-        Raises
-        ------
-        DuplicateDefinitionError
-            If the vendor is already registered.
         """
         if vendor.id in self._vendors:
             raise DuplicateDefinitionError(
@@ -51,16 +41,6 @@ class DeviceRegistry:
     def get_vendor(self, vendor_id: str) -> VendorDefinition | None:
         """
         Return a vendor by its identifier.
-
-        Parameters
-        ----------
-        vendor_id
-            Vendor identifier.
-
-        Returns
-        -------
-        VendorDefinition | None
-            Vendor if found, otherwise None.
         """
         return self._vendors.get(vendor_id)
 
@@ -101,16 +81,6 @@ class DeviceRegistry:
     def register_device(self, device: DeviceDefinition) -> None:
         """
         Register a device.
-
-        Parameters
-        ----------
-        device
-            Device definition to register.
-
-        Raises
-        ------
-        DuplicateDefinitionError
-            If the device is already registered.
         """
         if device.id in self._devices:
             raise DuplicateDefinitionError(
@@ -125,18 +95,45 @@ class DeviceRegistry:
     def get_device(self, device_id: str) -> DeviceDefinition | None:
         """
         Return a device by its identifier.
+        """
+        return self._devices.get(device_id)
+
+    def find_i2c_device(
+        self,
+        address: int,
+    ) -> DeviceDefinition | None:
+        """
+        Find a device definition using an I²C address.
 
         Parameters
         ----------
-        device_id
-            Device identifier.
+        address
+            7-bit I²C device address.
 
         Returns
         -------
         DeviceDefinition | None
-            Device if found, otherwise None.
+            Matching device definition if found.
         """
-        return self._devices.get(device_id)
+
+        hex_address = f"0x{address:02X}"
+
+        for device in self._devices.values():
+
+            i2c_interface = device.interfaces.get("i2c")
+
+            if not i2c_interface:
+                continue
+
+            addresses = i2c_interface.get(
+                "addresses",
+                [],
+            )
+
+            if hex_address in addresses:
+                return device
+
+        return None
 
     @property
     def devices(self) -> tuple[DeviceDefinition, ...]:

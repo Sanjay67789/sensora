@@ -4,6 +4,7 @@ UART device discovery for Sensora.
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 from sensora.core.device import Device
@@ -19,27 +20,53 @@ class UARTScanner(BaseScanner):
     This scanner enumerates serial devices exposed by Linux.
     """
 
+    # Real user-accessible serial devices
     DEVICE_PATTERNS = (
-        "ttyS*",
         "ttyUSB*",
         "ttyACM*",
         "ttyAMA*",
         "ttyTHS*",
     )
 
-    def __init__(self, dev_directory: Path | str = "/dev") -> None:
+    # Optional hardware UARTs
+    OPTIONAL_PATTERNS = ("ttyS*",)
+
+    def __init__(
+        self,
+        dev_directory: Path | str = "/dev",
+        include_kernel_uart: bool = False,
+    ) -> None:
         self._dev_directory = Path(dev_directory)
+        self._include_kernel_uart = include_kernel_uart
 
     @property
     def name(self) -> str:
         return "UART"
 
     def scan(self) -> Result:
+        """
+        Scan Linux serial devices.
+        """
+
         devices: list[Device] = []
+        seen: set[Path] = set()
 
         try:
-            for pattern in self.DEVICE_PATTERNS:
+            patterns = list(self.DEVICE_PATTERNS)
+
+            if self._include_kernel_uart:
+                patterns.extend(self.OPTIONAL_PATTERNS)
+
+            for pattern in patterns:
                 for path in sorted(self._dev_directory.glob(pattern)):
+                    if path in seen:
+                        continue
+
+                    if not self._is_device(path):
+                        continue
+
+                    seen.add(path)
+
                     devices.append(self._create_device(path))
 
             return Result(
@@ -52,10 +79,31 @@ class UARTScanner(BaseScanner):
             return Result(
                 success=False,
                 message="Failed to enumerate UART devices.",
+                devices=[],
                 error=exc,
             )
 
-    def _create_device(self, path: Path) -> Device:
+    def _is_device(
+        self,
+        path: Path,
+    ) -> bool:
+        """
+        Check whether the path is a usable serial device.
+        """
+
+        try:
+            return path.exists() and os.access(
+                path,
+                os.R_OK | os.W_OK,
+            )
+
+        except OSError:
+            return False
+
+    def _create_device(
+        self,
+        path: Path,
+    ) -> Device:
         return Device(
             name=path.name,
             bus=BusType.UART,
