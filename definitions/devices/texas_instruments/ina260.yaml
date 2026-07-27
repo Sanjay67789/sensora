@@ -1,0 +1,59 @@
+id: ina260
+
+name: INA260
+
+vendor: texas_instruments
+
+buses:
+  - i2c
+
+addresses:
+  - "0x40"
+  - "0x41"
+  - "0x42"
+  - "0x43"
+  - "0x44"
+  - "0x45"
+  - "0x46"
+  - "0x47"
+
+chip_id: "0x2270"
+
+driver_module: sensora.drivers.ina260
+
+description: >
+  Texas Instruments integrated current, voltage and power monitor
+  with an internal precision shunt resistor.
+
+metadata:
+  category: power_monitor
+
+  measurements:
+    - bus_voltage
+    - current
+    - power
+
+  operating_voltage:
+    min: 2.7
+    typ: 3.3
+    max: 5.5
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 125
+    unit: C
+
+  package: TSSOP-16
+
+  datasheet: https://www.ti.com/product/INA260
+
+  features:
+    - integrated_shunt
+    - current_sensor
+    - voltage_sensor
+    - power_monitor
+    - alert_pin
+
+  notes:
+    - Device ID register available.

@@ -1,0 +1,79 @@
+id: bme280
+
+name: BME280
+
+vendor: bosch
+
+buses:
+  - i2c
+  - spi
+
+addresses:
+  - "0x76"
+  - "0x77"
+
+chip_id: "0x60"
+
+driver_module: sensora.drivers.bme280
+
+description: >
+  Bosch digital environmental sensor providing temperature,
+  barometric pressure, and relative humidity measurements.
+
+metadata:
+  category: environmental
+
+  measurements:
+    - temperature
+    - pressure
+    - humidity
+
+  interfaces:
+    i2c: true
+    spi: true
+
+  operating_voltage:
+    min: 1.71
+    typ: 1.80
+    max: 3.60
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 85
+    unit: C
+
+  resolution:
+    temperature:
+      value: 0.01
+      unit: C
+
+    pressure:
+      value: 0.18
+      unit: Pa
+
+    humidity:
+      value: 0.008
+      unit: "%RH"
+
+  package: LGA-8
+
+  manufacturer: Bosch Sensortec
+
+  datasheet: https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/
+
+  features:
+    - temperature
+    - pressure
+    - humidity
+    - oversampling
+    - digital_filter
+    - standby_modes
+    - forced_mode
+    - normal_mode
+    - sleep_mode
+
+  notes:
+    - Address is selected using the SDO pin.
+    - 0x76 when SDO is LOW.
+    - 0x77 when SDO is HIGH.

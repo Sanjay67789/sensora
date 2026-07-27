@@ -1,0 +1,87 @@
+id: hdc1080
+
+name: HDC1080
+
+vendor: texas_instruments
+
+buses:
+  - i2c
+
+addresses:
+  - "0x40"
+
+chip_id: null
+
+driver_module: sensora.drivers.hdc1080
+
+description: >
+  Texas Instruments HDC1080 low-power digital humidity and
+  temperature sensor featuring factory calibration,
+  integrated heating element, and an I2C-compatible interface.
+
+metadata:
+  category: environmental_sensor
+
+  measurements:
+    - temperature
+    - humidity
+
+  operating_voltage:
+    min: 2.7
+    typ: 3.3
+    max: 5.5
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 125
+    unit: C
+
+  measurement_range:
+    temperature:
+      min: -40
+      max: 125
+      unit: C
+
+    humidity:
+      min: 0
+      max: 100
+      unit: "%RH"
+
+  accuracy:
+    temperature:
+      typ: "±0.2°C"
+
+    humidity:
+      typ: "±2%RH"
+
+  resolution:
+    temperature:
+      - "11-bit"
+      - "14-bit"
+
+    humidity:
+      - "8-bit"
+      - "11-bit"
+      - "14-bit"
+
+  package: WSON-6
+
+  datasheet: https://www.ti.com/product/HDC1080
+
+  features:
+    - temperature_sensor
+    - humidity_sensor
+    - factory_calibrated
+    - low_power
+    - integrated_heater
+    - programmable_resolution
+    - battery_monitor
+    - interrupt
+    - one_shot_conversion
+
+  notes:
+    - Fixed I2C address of 0x40.
+    - Factory calibrated; no user calibration required.
+    - Integrated heater helps reduce condensation during high-humidity operation.
+    - Does not provide a dedicated WHO_AM_I or CHIP_ID register.

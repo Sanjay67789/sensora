@@ -1,0 +1,91 @@
+id: lsm303agr
+
+name: LSM303AGR
+
+vendor: stmicroelectronics
+
+buses:
+  - i2c
+  - spi
+
+addresses:
+  accelerometer:
+    - "0x19"
+
+  magnetometer:
+    - "0x1E"
+
+chip_id:
+  accelerometer: "0x33"
+  magnetometer: "0x40"
+
+driver_module: sensora.drivers.lsm303agr
+
+description: >
+  STMicroelectronics LSM303AGR ultra-low-power eCompass module
+  integrating a 3-axis accelerometer and a 3-axis magnetometer.
+  Designed for motion sensing, orientation detection, navigation,
+  and industrial IoT applications.
+
+metadata:
+  category: imu
+
+  measurements:
+    - acceleration
+    - magnetic_field
+    - temperature
+
+  operating_voltage:
+    min: 1.71
+    typ: 1.80
+    max: 3.60
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 85
+    unit: C
+
+  accelerometer_range:
+    - "±2g"
+    - "±4g"
+    - "±8g"
+    - "±16g"
+
+  magnetometer_range:
+    - "±50 gauss"
+
+  resolution:
+    accelerometer:
+      value: 12
+      unit: bit
+
+    magnetometer:
+      value: 16
+      unit: bit
+
+  package: LGA-12
+
+  datasheet: https://www.st.com/en/mems-and-sensors/lsm303agr.html
+
+  features:
+    - 3_axis_accelerometer
+    - 3_axis_magnetometer
+    - fifo
+    - interrupt
+    - self_test
+    - orientation_detection
+    - motion_detection
+    - tilt_detection
+    - low_power
+    - sensor_hub
+    - spi
+    - i2c
+
+  notes:
+    - Integrates two independent devices in one package.
+    - Accelerometer I2C address is fixed at 0x19.
+    - Magnetometer I2C address is fixed at 0x1E.
+    - Accelerometer WHO_AM_I register value is 0x33.
+    - Magnetometer WHO_AM_I register value is 0x40.
+    - Accelerometer and magnetometer are accessed independently.

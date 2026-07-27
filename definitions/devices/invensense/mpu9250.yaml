@@ -1,0 +1,88 @@
+id: mpu9250
+
+name: MPU9250
+
+vendor: invensense
+
+buses:
+  - i2c
+  - spi
+
+addresses:
+  - "0x68"
+  - "0x69"
+
+chip_id: "0x71"
+
+driver_module: sensora.drivers.mpu9250
+
+description: >
+  InvenSense 9-axis MotionTracking device integrating a
+  3-axis accelerometer, 3-axis gyroscope, and a 3-axis
+  magnetometer with an embedded Digital Motion Processor (DMP).
+
+metadata:
+  category: imu
+
+  measurements:
+    - acceleration
+    - angular_velocity
+    - magnetic_field
+    - temperature
+
+  operating_voltage:
+    min: 1.71
+    typ: 1.80
+    max: 3.60
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 85
+    unit: C
+
+  accelerometer_range:
+    - "±2g"
+    - "±4g"
+    - "±8g"
+    - "±16g"
+
+  gyroscope_range:
+    - "±250°/s"
+    - "±500°/s"
+    - "±1000°/s"
+    - "±2000°/s"
+
+  magnetometer:
+    model: AK8963
+
+    range:
+      - "±4900 µT"
+
+    resolution:
+      - "14-bit"
+      - "16-bit"
+
+  package: QFN-24
+
+  datasheet: https://invensense.tdk.com/products/motion-tracking/9-axis/mpu-9250/
+
+  features:
+    - 3_axis_accelerometer
+    - 3_axis_gyroscope
+    - 3_axis_magnetometer
+    - digital_motion_processor
+    - fifo
+    - interrupt
+    - wake_on_motion
+    - self_test
+    - temperature_sensor
+    - spi
+    - i2c
+
+  notes:
+    - AD0 pin selects the I2C address.
+    - 0x68 when AD0 is LOW.
+    - 0x69 when AD0 is HIGH.
+    - Integrated AK8963 3-axis magnetometer.
+    - Supports both I2C and SPI interfaces.

@@ -1,0 +1,59 @@
+id: ina219
+
+name: INA219
+
+vendor: texas_instruments
+
+buses:
+  - i2c
+
+addresses:
+  - "0x40"
+  - "0x41"
+  - "0x44"
+  - "0x45"
+
+chip_id: null
+
+driver_module: sensora.drivers.ina219
+
+description: >
+  Texas Instruments high-side current and power monitor with
+  12-bit ADC for measuring bus voltage, shunt voltage, current,
+  and power.
+
+metadata:
+  category: power_monitor
+
+  measurements:
+    - bus_voltage
+    - shunt_voltage
+    - current
+    - power
+
+  operating_voltage:
+    min: 3.0
+    typ: 3.3
+    max: 5.5
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 125
+    unit: C
+
+  package: SOT-23-8
+
+  datasheet: https://www.ti.com/product/INA219
+
+  features:
+    - current_sensor
+    - voltage_sensor
+    - power_monitor
+    - programmable_gain
+    - programmable_adc
+    - calibration_register
+
+  notes:
+    - Supports four selectable I2C addresses.
+    - No dedicated chip identification register.

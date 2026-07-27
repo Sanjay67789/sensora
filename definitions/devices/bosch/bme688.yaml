@@ -1,0 +1,86 @@
+id: bme688
+
+name: BME688
+
+vendor: bosch
+
+buses:
+  - i2c
+  - spi
+
+addresses:
+  - "0x76"
+  - "0x77"
+
+chip_id: "0x61"
+
+driver_module: sensora.drivers.bme688
+
+description: >
+  Bosch AI-enabled environmental sensor providing
+  temperature, barometric pressure, relative humidity,
+  and gas resistance measurements with support for
+  machine-learning based gas classification.
+
+metadata:
+  category: environmental
+
+  measurements:
+    - temperature
+    - pressure
+    - humidity
+    - gas_resistance
+
+  operating_voltage:
+    min: 1.71
+    typ: 1.80
+    max: 3.60
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 85
+    unit: C
+
+  resolution:
+    temperature:
+      value: 0.01
+      unit: C
+
+    pressure:
+      value: 0.18
+      unit: Pa
+
+    humidity:
+      value: 0.008
+      unit: "%RH"
+
+    gas_resistance:
+      unit: Ω
+
+  package: LGA-8
+
+  datasheet: https://www.bosch-sensortec.com/products/environmental-sensors/gas-sensors/bme688/
+
+  features:
+    - temperature
+    - pressure
+    - humidity
+    - gas_sensor
+    - indoor_air_quality
+    - programmable_gas_heater
+    - ai_gas_classification
+    - bme_ai_studio
+    - oversampling
+    - digital_filter
+    - forced_mode
+    - sleep_mode
+    - spi
+    - i2c
+
+  notes:
+    - Address is selected using the SDO pin.
+    - 0x76 when SDO is LOW.
+    - 0x77 when SDO is HIGH.
+    - Shares the same chip ID as the BME680.
+    - AI-based gas classification requires Bosch BME AI-Studio and appropriate firmware/software support.

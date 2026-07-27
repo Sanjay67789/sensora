@@ -1,0 +1,94 @@
+id: hdc2080
+
+name: HDC2080
+
+vendor: texas_instruments
+
+buses:
+  - i2c
+
+addresses:
+  - "0x40"
+  - "0x41"
+
+chip_id: "0x07D0"
+
+driver_module: sensora.drivers.hdc2080
+
+description: >
+  Texas Instruments HDC2080 ultra-low-power digital humidity
+  and temperature sensor featuring programmable measurement
+  modes, integrated heater, interrupt support, and a Device ID
+  register for identification.
+
+metadata:
+  category: environmental_sensor
+
+  measurements:
+    - temperature
+    - humidity
+
+  operating_voltage:
+    min: 1.62
+    typ: 1.80
+    max: 3.60
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 125
+    unit: C
+
+  measurement_range:
+    temperature:
+      min: -40
+      max: 125
+      unit: C
+
+    humidity:
+      min: 0
+      max: 100
+      unit: "%RH"
+
+  accuracy:
+    temperature:
+      typ: "±0.2°C"
+
+    humidity:
+      typ: "±2%RH"
+
+  resolution:
+    temperature:
+      - "9-bit"
+      - "11-bit"
+      - "14-bit"
+
+    humidity:
+      - "9-bit"
+      - "11-bit"
+      - "14-bit"
+
+  package: WSON-6
+
+  datasheet: https://www.ti.com/product/HDC2080
+
+  features:
+    - temperature_sensor
+    - humidity_sensor
+    - factory_calibrated
+    - low_power
+    - integrated_heater
+    - programmable_resolution
+    - programmable_sampling_rate
+    - interrupt
+    - threshold_alert
+    - battery_monitor
+    - one_shot_conversion
+    - automatic_measurement
+
+  notes:
+    - Supports two selectable I2C addresses.
+    - Address 0x40 when ADDR is LOW.
+    - Address 0x41 when ADDR is HIGH.
+    - Factory calibrated.
+    - Device ID register value is 0x07D0.

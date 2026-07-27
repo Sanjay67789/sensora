@@ -1,0 +1,90 @@
+id: hts221
+
+name: HTS221
+
+vendor: stmicroelectronics
+
+buses:
+  - i2c
+  - spi
+
+addresses:
+  - "0x5F"
+
+chip_id: "0xBC"
+
+driver_module: sensora.drivers.hts221
+
+description: >
+  STMicroelectronics HTS221 ultra-low-power capacitive digital
+  humidity and temperature sensor with factory calibration,
+  high accuracy, and support for I2C and SPI interfaces.
+
+metadata:
+  category: environmental_sensor
+
+  measurements:
+    - temperature
+    - humidity
+
+  operating_voltage:
+    min: 1.7
+    typ: 3.3
+    max: 3.6
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 120
+    unit: C
+
+  measurement_range:
+    temperature:
+      min: -40
+      max: 120
+      unit: C
+
+    humidity:
+      min: 0
+      max: 100
+      unit: "%RH"
+
+  accuracy:
+    temperature:
+      typ: "±0.5°C"
+
+    humidity:
+      typ: "±3.5%RH"
+
+  resolution:
+    temperature:
+      value: 16
+      unit: bit
+
+    humidity:
+      value: 16
+      unit: bit
+
+  package: HLGA-6
+
+  datasheet: https://www.st.com/en/mems-and-sensors/hts221.html
+
+  features:
+    - temperature_sensor
+    - humidity_sensor
+    - factory_calibrated
+    - calibration_registers
+    - one_shot_conversion
+    - data_ready
+    - interrupt
+    - low_power
+    - block_data_update
+    - spi
+    - i2c
+
+  notes:
+    - Supports both I2C and SPI communication.
+    - Fixed I2C address of 0x5F.
+    - Factory calibration coefficients are stored in internal registers.
+    - WHO_AM_I register value is 0xBC.
+    - Intended for environmental monitoring and indoor climate sensing.

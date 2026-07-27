@@ -1,0 +1,84 @@
+id: bme680
+
+name: BME680
+
+vendor: bosch
+
+buses:
+  - i2c
+  - spi
+
+addresses:
+  - "0x76"
+  - "0x77"
+
+chip_id: "0x61"
+
+driver_module: sensora.drivers.bme680
+
+description: >
+  Bosch integrated environmental sensor providing
+  temperature, barometric pressure, relative humidity,
+  and gas resistance measurements for indoor air quality
+  applications.
+
+metadata:
+  category: environmental
+
+  measurements:
+    - temperature
+    - pressure
+    - humidity
+    - gas_resistance
+
+  operating_voltage:
+    min: 1.71
+    typ: 1.80
+    max: 3.60
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 85
+    unit: C
+
+  resolution:
+    temperature:
+      value: 0.01
+      unit: C
+
+    pressure:
+      value: 0.18
+      unit: Pa
+
+    humidity:
+      value: 0.008
+      unit: "%RH"
+
+    gas_resistance:
+      unit: Ω
+
+  package: LGA-8
+
+  datasheet: https://www.bosch-sensortec.com/products/environmental-sensors/gas-sensors/bme680/
+
+  features:
+    - temperature
+    - pressure
+    - humidity
+    - gas_sensor
+    - indoor_air_quality
+    - programmable_gas_heater
+    - oversampling
+    - digital_filter
+    - forced_mode
+    - sleep_mode
+    - spi
+    - i2c
+
+  notes:
+    - Address is selected using the SDO pin.
+    - 0x76 when SDO is LOW.
+    - 0x77 when SDO is HIGH.
+    - Gas resistance measurement requires the integrated heater.
+    - Gas resistance is not a direct VOC concentration measurement.

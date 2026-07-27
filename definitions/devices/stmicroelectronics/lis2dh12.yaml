@@ -1,0 +1,76 @@
+id: lis2dh12
+
+name: LIS2DH12
+
+vendor: stmicroelectronics
+
+buses:
+  - i2c
+  - spi
+
+addresses:
+  - "0x18"
+  - "0x19"
+
+chip_id: "0x33"
+
+driver_module: sensora.drivers.lis2dh12
+
+description: >
+  STMicroelectronics ultra-low-power 3-axis accelerometer
+  featuring high-resolution output, FIFO buffer, interrupt
+  generation, and I2C/SPI communication interfaces.
+
+metadata:
+  category: accelerometer
+
+  measurements:
+    - acceleration
+    - temperature
+
+  operating_voltage:
+    min: 1.71
+    typ: 2.50
+    max: 3.60
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 85
+    unit: C
+
+  accelerometer_range:
+    - "±2g"
+    - "±4g"
+    - "±8g"
+    - "±16g"
+
+  resolution:
+    value: 12
+    unit: bit
+
+  package: LGA-12
+
+  datasheet: https://www.st.com/en/mems-and-sensors/lis2dh12.html
+
+  features:
+    - 3_axis_accelerometer
+    - fifo
+    - interrupt
+    - click_detection
+    - double_click_detection
+    - free_fall_detection
+    - motion_detection
+    - orientation_detection
+    - low_power
+    - self_test
+    - high_resolution
+    - spi
+    - i2c
+
+  notes:
+    - Supports both I2C and SPI communication.
+    - I2C address selected using the SDO/SA0 pin.
+    - Address 0x18 when SA0 is LOW.
+    - Address 0x19 when SA0 is HIGH.
+    - WHO_AM_I register value is 0x33.

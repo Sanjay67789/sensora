@@ -1,0 +1,57 @@
+id: tca9548a
+
+name: TCA9548A
+
+vendor: texas_instruments
+
+buses:
+  - i2c
+
+addresses:
+  - "0x70"
+  - "0x71"
+  - "0x72"
+  - "0x73"
+  - "0x74"
+  - "0x75"
+  - "0x76"
+  - "0x77"
+
+chip_id: null
+
+driver_module: sensora.drivers.tca9548a
+
+description: >
+  Texas Instruments 8-channel I2C switch/multiplexer allowing
+  multiple downstream I2C buses to be independently selected.
+
+metadata:
+  category: i2c_multiplexer
+
+  measurements: []
+
+  operating_voltage:
+    min: 1.65
+    typ: 3.3
+    max: 5.5
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 85
+    unit: C
+
+  package: TSSOP-24
+
+  datasheet: https://www.ti.com/product/TCA9548A
+
+  features:
+    - i2c_switch
+    - eight_channels
+    - bidirectional
+    - hot_insertion
+    - reset_pin
+
+  notes:
+    - Eight selectable I2C addresses.
+    - Commonly used to eliminate I2C address conflicts.

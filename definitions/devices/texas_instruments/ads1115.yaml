@@ -1,0 +1,57 @@
+id: ads1115
+
+name: ADS1115
+
+vendor: texas_instruments
+
+buses:
+  - i2c
+
+addresses:
+  - "0x48"
+  - "0x49"
+  - "0x4A"
+  - "0x4B"
+
+chip_id: null
+
+driver_module: sensora.drivers.ads1115
+
+description: >
+  Texas Instruments precision 16-bit analog-to-digital converter
+  with programmable gain amplifier.
+
+metadata:
+  category: adc
+
+  measurements:
+    - analog_voltage
+
+  operating_voltage:
+    min: 2.0
+    typ: 3.3
+    max: 5.5
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 125
+    unit: C
+
+  resolution:
+    value: 16
+    unit: bit
+
+  package: VSSOP-10
+
+  datasheet: https://www.ti.com/product/ADS1115
+
+  features:
+    - four_channel_adc
+    - programmable_gain
+    - comparator
+    - single_shot
+    - continuous_conversion
+
+  notes:
+    - Four selectable I2C addresses.

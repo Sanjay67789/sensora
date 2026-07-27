@@ -1,0 +1,72 @@
+id: bmp390
+
+name: BMP390
+
+vendor: bosch
+
+buses:
+  - i2c
+  - spi
+
+addresses:
+  - "0x76"
+  - "0x77"
+
+chip_id: "0x60"
+
+driver_module: sensora.drivers.bmp390
+
+description: >
+  Bosch ultra-high precision digital barometric pressure
+  sensor providing temperature and pressure measurements
+  for navigation, weather monitoring, and altitude estimation.
+
+metadata:
+  category: environmental
+
+  measurements:
+    - temperature
+    - pressure
+
+  operating_voltage:
+    min: 1.65
+    typ: 1.80
+    max: 3.60
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 85
+    unit: C
+
+  resolution:
+    temperature:
+      value: 0.01
+      unit: C
+
+    pressure:
+      value: 0.03
+      unit: Pa
+
+  package: LGA-10
+
+  datasheet: https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bmp390/
+
+  features:
+    - temperature
+    - pressure
+    - high_precision
+    - altitude_estimation
+    - weather_monitoring
+    - fifo
+    - interrupt
+    - oversampling
+    - iir_filter
+    - spi
+    - i2c
+
+  notes:
+    - Address is selected using the SDO pin.
+    - 0x76 when SDO is LOW.
+    - 0x77 when SDO is HIGH.
+    - Software compatible with the BMP388 for most applications.

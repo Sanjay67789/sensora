@@ -1,0 +1,63 @@
+id: bmp180
+
+name: BMP180
+
+vendor: bosch
+
+buses:
+  - i2c
+
+addresses:
+  - "0x77"
+
+chip_id: "0x55"
+
+driver_module: sensora.drivers.bmp180
+
+description: >
+  Bosch digital barometric pressure sensor providing
+  temperature and pressure measurements.
+
+metadata:
+  category: environmental
+
+  measurements:
+    - temperature
+    - pressure
+
+  operating_voltage:
+    min: 1.80
+    typ: 3.30
+    max: 3.60
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 85
+    unit: C
+
+  resolution:
+    temperature:
+      value: 0.1
+      unit: C
+
+    pressure:
+      value: 1
+      unit: Pa
+
+  package: LCC-8
+
+  datasheet: https://www.bosch-sensortec.com/products/environmental-sensors/pressure-sensors/bmp180/
+
+  features:
+    - temperature
+    - pressure
+    - ultra_low_power_mode
+    - standard_mode
+    - high_resolution_mode
+    - ultra_high_resolution_mode
+
+  notes:
+    - Fixed I2C address 0x77.
+    - Supports only I2C communication.
+    - Superseded by the BMP280.

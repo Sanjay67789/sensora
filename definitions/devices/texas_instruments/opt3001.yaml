@@ -1,0 +1,73 @@
+id: opt3001
+
+name: OPT3001
+
+vendor: texas_instruments
+
+buses:
+  - i2c
+
+addresses:
+  - "0x44"
+  - "0x45"
+  - "0x46"
+  - "0x47"
+
+chip_id: null
+
+driver_module: sensora.drivers.opt3001
+
+description: >
+  Texas Instruments OPT3001 ambient light sensor featuring a
+  precision photodiode, automatic full-scale range selection,
+  and an I2C-compatible interface for lux measurements.
+
+metadata:
+  category: light_sensor
+
+  measurements:
+    - illuminance
+
+  operating_voltage:
+    min: 1.6
+    typ: 3.3
+    max: 3.6
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 85
+    unit: C
+
+  measurement_range:
+    illuminance:
+      min: 0.01
+      max: 83865.6
+      unit: lux
+
+  resolution:
+    value: 23
+    unit: effective_bits
+
+  package: WSON-6
+
+  datasheet: https://www.ti.com/product/OPT3001
+
+  features:
+    - ambient_light_sensor
+    - automatic_range
+    - programmable_conversion_time
+    - interrupt
+    - threshold_alert
+    - low_power
+    - one_shot_conversion
+    - continuous_conversion
+    - human_eye_response
+    - overflow_detection
+
+  notes:
+    - Supports four selectable I2C addresses.
+    - Address selected using the ADDR pin.
+    - Measures ambient light in lux.
+    - Spectral response closely matches the human eye.
+    - Does not provide a dedicated WHO_AM_I or CHIP_ID register.

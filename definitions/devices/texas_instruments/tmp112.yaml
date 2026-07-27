@@ -1,0 +1,72 @@
+id: tmp112
+
+name: TMP112
+
+vendor: texas_instruments
+
+buses:
+  - i2c
+
+addresses:
+  - "0x48"
+  - "0x49"
+  - "0x4A"
+  - "0x4B"
+
+chip_id: null
+
+driver_module: sensora.drivers.tmp112
+
+description: >
+  Texas Instruments TMP112 high-accuracy digital temperature
+  sensor with a 12-bit resolution, I2C/SMBus-compatible interface,
+  and programmable alert functionality.
+
+metadata:
+  category: temperature_sensor
+
+  measurements:
+    - temperature
+
+  operating_voltage:
+    min: 1.4
+    typ: 3.3
+    max: 3.6
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 125
+    unit: C
+
+  measurement_range:
+    min: -40
+    max: 125
+    unit: C
+
+  accuracy:
+    typ: "±0.5°C (−25°C to +85°C)"
+    max: "±1.0°C"
+
+  resolution:
+    value: 12
+    unit: bit
+
+  package: SOT-563
+
+  datasheet: https://www.ti.com/product/TMP112
+
+  features:
+    - temperature_sensor
+    - low_power
+    - shutdown_mode
+    - one_shot_conversion
+    - programmable_alert
+    - thermostat_mode
+    - smbus_compatible
+
+  notes:
+    - Supports four selectable I2C addresses via the ADD0 pin.
+    - Address is selected by connecting ADD0 to GND, VCC, SDA, or SCL.
+    - Software compatible with the TMP102.
+    - Does not provide a dedicated WHO_AM_I or CHIP_ID register.

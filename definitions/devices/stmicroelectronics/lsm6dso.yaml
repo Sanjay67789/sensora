@@ -1,0 +1,94 @@
+id: lsm6dso
+
+name: LSM6DSO
+
+vendor: stmicroelectronics
+
+buses:
+  - i2c
+  - spi
+  - i3c
+
+addresses:
+  - "0x6A"
+  - "0x6B"
+
+chip_id: "0x6C"
+
+driver_module: sensora.drivers.lsm6dso
+
+description: >
+  STMicroelectronics LSM6DSO low-power 6-axis inertial
+  measurement unit (IMU) integrating a 3-axis accelerometer
+  and a 3-axis gyroscope. The device features embedded
+  Machine Learning Core (MLC), Finite State Machine (FSM),
+  Sensor Hub, and supports I2C, SPI, and I3C interfaces.
+
+metadata:
+  category: imu
+
+  measurements:
+    - acceleration
+    - angular_velocity
+    - temperature
+
+  operating_voltage:
+    min: 1.71
+    typ: 1.80
+    max: 3.60
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 85
+    unit: C
+
+  accelerometer_range:
+    - "±2g"
+    - "±4g"
+    - "±8g"
+    - "±16g"
+
+  gyroscope_range:
+    - "±125°/s"
+    - "±250°/s"
+    - "±500°/s"
+    - "±1000°/s"
+    - "±2000°/s"
+
+  package: LGA-14
+
+  datasheet: https://www.st.com/en/mems-and-sensors/lsm6dso.html
+
+  features:
+    - 3_axis_accelerometer
+    - 3_axis_gyroscope
+    - temperature_sensor
+    - fifo
+    - interrupt
+    - self_test
+    - pedometer
+    - step_counter
+    - significant_motion
+    - tilt_detection
+    - wake_up_detection
+    - free_fall_detection
+    - tap_detection
+    - double_tap_detection
+    - machine_learning_core
+    - finite_state_machine
+    - sensor_hub
+    - timestamp
+    - low_power
+    - i2c
+    - spi
+    - i3c
+
+  notes:
+    - Supports I2C, SPI, and I3C communication.
+    - I2C address is selected using the SDO/SA0 pin.
+    - Address 0x6A when SA0 is LOW.
+    - Address 0x6B when SA0 is HIGH.
+    - WHO_AM_I register value is 0x6C.
+    - Embedded Machine Learning Core (MLC) enables on-device activity recognition.
+    - Finite State Machine (FSM) allows hardware-based event detection with minimal CPU usage.

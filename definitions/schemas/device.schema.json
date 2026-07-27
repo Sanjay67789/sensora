@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Sensora Device Definition",
+  "description": "Schema for Sensora hardware device definitions.",
+  "type": "object",
+
+  "required": [
+    "id",
+    "name",
+    "vendor",
+    "buses",
+    "addresses",
+    "driver_module"
+  ],
+
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$"
+    },
+
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+
+    "vendor": {
+      "type": "string"
+    },
+
+    "buses": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "i2c",
+          "spi",
+          "uart",
+          "onewire",
+          "can",
+          "usb",
+          "gpio"
+        ]
+      }
+    },
+
+    "addresses": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 127
+      }
+    },
+
+    "chip_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+
+    "driver_module": {
+      "type": "string"
+    },
+
+    "description": {
+      "type": "string"
+    },
+
+    "metadata": {
+      "type": "object"
+    }
+  },
+
+  "additionalProperties": false
+}

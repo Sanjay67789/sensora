@@ -1,0 +1,80 @@
+id: lps22hb
+
+name: LPS22HB
+
+vendor: stmicroelectronics
+
+buses:
+  - i2c
+  - spi
+
+addresses:
+  - "0x5C"
+  - "0x5D"
+
+chip_id: "0xB1"
+
+driver_module: sensora.drivers.lps22hb
+
+description: >
+  STMicroelectronics LPS22HB ultra-compact MEMS pressure sensor
+  providing high-resolution barometric pressure and temperature
+  measurements for weather monitoring, altitude estimation, and
+  industrial applications.
+
+metadata:
+  category: pressure_sensor
+
+  measurements:
+    - pressure
+    - temperature
+
+  operating_voltage:
+    min: 1.7
+    typ: 1.80
+    max: 3.6
+    unit: V
+
+  operating_temperature:
+    min: -40
+    max: 85
+    unit: C
+
+  measurement_range:
+    pressure:
+      min: 260
+      max: 1260
+      unit: hPa
+
+    temperature:
+      min: -40
+      max: 85
+      unit: C
+
+  pressure_resolution:
+    value: 24
+    unit: bit
+
+  package: HLGA-10
+
+  datasheet: https://www.st.com/en/mems-and-sensors/lps22hb.html
+
+  features:
+    - pressure_sensor
+    - temperature_sensor
+    - fifo
+    - interrupt
+    - low_power
+    - one_shot_conversion
+    - auto_increment
+    - data_ready
+    - spi
+    - i2c
+
+  notes:
+    - Supports both I2C and SPI communication.
+    - I2C address is selected using the SDO pin.
+    - Address 0x5C when SDO is LOW.
+    - Address 0x5D when SDO is HIGH.
+    - WHO_AM_I register value is 0xB1.
+    - Suitable for altitude estimation and weather monitoring.
