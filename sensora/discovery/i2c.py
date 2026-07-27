@@ -14,12 +14,21 @@ from sensora.discovery.probe import I2CProbe
 class I2CScanner(BaseScanner):
     """Discover devices connected to an I²C bus."""
 
+    @property
+    def name(self) -> str:
+        """
+        Human-readable scanner name.
+        """
+        return "I²C"
+
     def __init__(self, bus_id: int = 1) -> None:
         self._bus = I2CBus(bus_id)
         self._probe = I2CProbe(self._bus)
 
     def scan(self) -> Result:
-        """Scan the I²C bus for responding devices."""
+        """
+        Scan the I²C bus for responding devices.
+        """
 
         devices: list[Device] = []
 

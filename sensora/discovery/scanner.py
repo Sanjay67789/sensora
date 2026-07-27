@@ -1,30 +1,56 @@
-"""Unified discovery interface for Sensora."""
+"""
+Unified discovery interface for Sensora.
+"""
 
 from __future__ import annotations
 
-from sensora.core.device import Device
+import time
+
+from sensora.core.scan_result import BusResult, ScanResult
 from sensora.discovery.base import BaseScanner
 
 
 class Scanner:
-    """Coordinates all registered discovery scanners."""
+    """
+    Coordinates all registered discovery scanners.
+    """
 
     def __init__(self) -> None:
         self._scanners: list[BaseScanner] = []
 
     def register(self, scanner: BaseScanner) -> None:
-        """Register a discovery scanner."""
+        """
+        Register a discovery scanner.
+        """
         self._scanners.append(scanner)
 
-    def scan(self) -> list[Device]:
-        """Run all registered scanners."""
+    def clear(self) -> None:
+        """
+        Remove all registered scanners.
+        """
+        self._scanners.clear()
 
-        devices: list[Device] = []
+    def scan(self) -> ScanResult:
+        """
+        Execute every registered scanner and return a unified ScanResult.
+        """
+
+        start = time.perf_counter()
+
+        result = ScanResult()
 
         for scanner in self._scanners:
-            result = scanner.scan()
+            scan_result = scanner.scan()
 
-            if result.success:
-                devices.extend(result.devices)
+            result.buses.append(
+                BusResult(
+                    name=scanner.name,
+                    success=scan_result.success,
+                    devices=scan_result.devices,
+                    message=scan_result.message,
+                )
+            )
 
-        return devices
+        result.duration = time.perf_counter() - start
+
+        return result

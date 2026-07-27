@@ -1,0 +1,3 @@
+"""
+Sensora CLI commands package.
+"""

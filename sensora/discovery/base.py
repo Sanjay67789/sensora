@@ -10,6 +10,12 @@ from sensora.core.result import Result
 class BaseScanner(ABC):
     """Base class for all discovery scanners."""
 
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        """Human-readable scanner name."""
+        raise NotImplementedError
+
     @abstractmethod
     def scan(self) -> Result:
         """
