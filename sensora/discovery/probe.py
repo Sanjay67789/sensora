@@ -4,8 +4,8 @@ I²C device probing utilities.
 
 from __future__ import annotations
 
+from sensora.buses.exceptions import DeviceCommunicationError
 from sensora.buses.i2c import I2CBus
-from sensora.core.exceptions import DeviceCommunicationError
 
 
 class I2CProbe:

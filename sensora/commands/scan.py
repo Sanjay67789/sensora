@@ -43,10 +43,7 @@ def main(
     scanner = Scanner()
 
     match bus.lower():
-        case "all":
-            scanner.register(I2CScanner())
-
-        case "i2c":
+        case "all" | "i2c":
             scanner.register(I2CScanner())
 
         case _:
@@ -57,26 +54,31 @@ def main(
             raise typer.Exit(code=1)
 
     if verbose:
-        typer.secho("Scanning hardware...", fg=typer.colors.CYAN)
+        typer.secho(
+            "Scanning hardware...",
+            fg=typer.colors.CYAN,
+        )
 
     result = scanner.scan()
 
+    devices = [device for bus_result in result.buses for device in bus_result.devices]
+
+    # JSON output
     if json_output:
         output = []
 
-        for device in result.devices:
+        for device in devices:
             output.append(
                 {
                     "name": device.name,
                     "bus": device.bus.name,
                     "manufacturer": device.manufacturer,
                     "address": (
-                        hex(device.address)
-                        if device.address is not None
-                        else None
+                        hex(device.address) if device.address is not None else None
                     ),
                     "status": device.status.name,
                     "description": device.description,
+                    "metadata": device.metadata,
                 }
             )
 
@@ -85,47 +87,47 @@ def main(
 
     typer.echo()
 
-    if not result.devices:
+    # No devices found
+    if not devices:
         typer.secho(
             "No supported devices found.",
             fg=typer.colors.YELLOW,
         )
 
+        if verbose:
+            for bus_result in result.buses:
+                typer.echo(f"{bus_result.name}: {bus_result.message}")
+
         typer.echo(f"Scan completed in {result.duration:.3f} s")
         return
 
+    # Devices found
     typer.secho(
-        f"Found {result.device_count} device(s)\n",
+        f"Found {len(devices)} device(s)\n",
         fg=typer.colors.GREEN,
         bold=True,
     )
 
-    for index, device in enumerate(result.devices, start=1):
+    for index, device in enumerate(devices, start=1):
         typer.echo(f"[{index}] {device.name}")
+
         typer.echo(f"    Bus          : {device.bus.name}")
 
         typer.echo(
             "    Address      : "
-            + (
-                hex(device.address)
-                if device.address is not None
-                else "N/A"
-            )
+            + (hex(device.address) if device.address is not None else "N/A")
         )
 
-        typer.echo(
-            "    Manufacturer : "
-            + (device.manufacturer or "Unknown")
-        )
+        typer.echo("    Manufacturer : " + (device.manufacturer or "Unknown"))
 
-        typer.echo(
-            f"    Status       : {device.status.name}"
-        )
+        typer.echo(f"    Status       : {device.status.name}")
 
         if device.description:
-            typer.echo(
-                f"    Description  : {device.description}"
-            )
+            typer.echo(f"    Description  : {device.description}")
+
+        if device.metadata:
+            for key, value in device.metadata.items():
+                typer.echo(f"    {key:<12} : {value}")
 
         typer.echo()
 

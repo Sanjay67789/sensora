@@ -1,71 +1,105 @@
-"""I²C device discovery."""
+"""
+I²C device discovery for Linux.
+"""
 
 from __future__ import annotations
 
-from sensora.buses.i2c import I2CBus
+import time
+from pathlib import Path
+
+from sensora.buses.exceptions import BusError
+from sensora.buses.linux.i2c import LinuxI2CBus
 from sensora.core.device import Device
 from sensora.core.enums import BusType, DeviceStatus
-from sensora.core.exceptions import DeviceCommunicationError
 from sensora.core.result import Result
 from sensora.discovery.base import BaseScanner
-from sensora.discovery.probe import I2CProbe
 
 
 class I2CScanner(BaseScanner):
-    """Discover devices connected to an I²C bus."""
+    """
+    Discover devices connected to all available Linux I²C adapters.
+    """
+
+    def __init__(
+        self,
+        device_directory: str | Path = "/dev",
+    ) -> None:
+        self._device_directory = Path(device_directory)
 
     @property
     def name(self) -> str:
-        """
-        Human-readable scanner name.
-        """
+        """Return the scanner name."""
         return "I²C"
-
-    def __init__(self, bus_id: int = 1) -> None:
-        self._bus = I2CBus(bus_id)
-        self._probe = I2CProbe(self._bus)
 
     def scan(self) -> Result:
         """
-        Scan the I²C bus for responding devices.
+        Scan every Linux I²C adapter.
         """
-
         devices: list[Device] = []
 
-        opened_here = False
+        scanned_buses = 0
+        failed_buses = 0
 
-        if not self._bus.is_open:
-            self._bus.open()
-            opened_here = True
+        adapters = sorted(self._device_directory.glob("i2c-*"))
 
-        try:
-            for address in range(0x03, 0x78):
-                if self._probe.exists(address):
+        if not adapters:
+            return Result(
+                success=True,
+                message="No Linux I²C adapters found.",
+            )
+
+        for adapter in adapters:
+
+            bus_start = time.perf_counter()
+
+            try:
+                bus_id = int(adapter.name.removeprefix("i2c-"))
+
+            except ValueError:
+                continue
+
+            bus = LinuxI2CBus(bus_id)
+
+            try:
+                bus.open()
+                scanned_buses += 1
+
+                addresses = bus.scan()
+
+                scan_time = time.perf_counter() - bus_start
+
+                for address in addresses:
                     devices.append(
                         Device(
-                            name="Unknown I²C Device",
-                            manufacturer="Unknown",
+                            name=f"I²C Device (0x{address:02X})",
+                            manufacturer=None,
                             bus=BusType.I2C,
                             address=address,
-                            chip_id=None,
                             status=DeviceStatus.DETECTED,
-                            description="I²C device detected",
+                            description="Detected during I²C scan.",
+                            metadata={
+                                "bus_id": bus_id,
+                                "device": str(adapter),
+                                "scan_time": f"{scan_time:.3f}s",
+                            },
                         )
                     )
 
-        except DeviceCommunicationError:
-            return Result(
-                success=False,
-                message="Failed to scan the I²C bus.",
-                devices=[],
-            )
+            except BusError:
+                failed_buses += 1
 
-        finally:
-            if opened_here:
-                self._bus.close()
+            finally:
+                if bus.is_open:
+                    bus.close()
 
         return Result(
             success=True,
-            message=f"Found {len(devices)} device(s).",
+            message=(
+                f"Scanned {scanned_buses} bus(es), " f"found {len(devices)} device(s)."
+            ),
             devices=devices,
+            data={
+                "buses_scanned": scanned_buses,
+                "buses_failed": failed_buses,
+            },
         )

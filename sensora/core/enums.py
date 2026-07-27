@@ -11,6 +11,7 @@ class BusType(str, Enum):
     UART = "uart"
     USB = "usb"
     GPIO = "gpio"
+    ONEWIRE = "onewire"
 
 
 class DeviceStatus(str, Enum):

@@ -14,15 +14,11 @@ This separation allows Sensora to support multiple operating systems
 and testing backends without changing the public interface.
 """
 
-from __future__ import annotations
-
-from .gpio import LinuxGPIOBus
 from .i2c import LinuxI2CBus
 from .spi import LinuxSPIBus
 from .uart import LinuxUARTBus
 
 __all__ = (
-    "LinuxGPIOBus",
     "LinuxI2CBus",
     "LinuxSPIBus",
     "LinuxUARTBus",

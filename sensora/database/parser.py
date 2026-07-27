@@ -44,6 +44,9 @@ class YamlParser:
         ValueError
             If the YAML document is empty.
 
+        TypeError
+            If the root YAML object is not a mapping.
+
         yaml.YAMLError
             If the YAML is malformed.
         """
@@ -62,7 +65,7 @@ class YamlParser:
             raise ValueError(f"YAML file is empty: {path}")
 
         if not isinstance(data, dict):
-            raise ValueError(f"Root YAML object must be a mapping: {path}")
+            raise TypeError(f"Root YAML object must be a mapping: {path}")
 
         return data
 
@@ -83,7 +86,10 @@ class YamlParser:
         Raises
         ------
         ValueError
-            If the document is empty or the root object is not a mapping.
+            If the document is empty.
+
+        TypeError
+            If the root YAML object is not a mapping.
 
         yaml.YAMLError
             If the YAML is malformed.
@@ -94,6 +100,6 @@ class YamlParser:
             raise ValueError("YAML content is empty.")
 
         if not isinstance(data, dict):
-            raise ValueError("Root YAML object must be a mapping.")
+            raise TypeError("Root YAML object must be a mapping.")
 
         return data

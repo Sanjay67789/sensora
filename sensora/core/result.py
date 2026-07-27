@@ -1,4 +1,6 @@
-"""Common result object used throughout Sensora."""
+"""
+Common result object used throughout Sensora.
+"""
 
 from __future__ import annotations
 
@@ -13,11 +15,12 @@ class Result:
     """
     Represents the outcome of an operation.
 
-    Used by scanners, diagnostics, plugins, and commands to
-    return a consistent response.
+    Used by scanners, diagnostics,
+    plugins, and commands.
     """
 
     success: bool
+
     message: str = ""
 
     devices: list[Device] = field(default_factory=list)

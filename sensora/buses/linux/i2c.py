@@ -18,10 +18,11 @@ from sensora.buses.exceptions import (
     InvalidDataError,
     InvalidRegisterError,
 )
+from sensora.buses.i2c import I2CBus
 from sensora.buses.linux.base import LinuxBus
 
 
-class LinuxI2CBus(LinuxBus):
+class LinuxI2CBus(LinuxBus, I2CBus):
     """
     Native Linux implementation of an I²C communication bus.
 
@@ -208,24 +209,19 @@ class LinuxI2CBus(LinuxBus):
         Returns
         -------
         list[int]
-            List of detected 7-bit device addresses.
-
-        Raises
-        ------
-        BusScanError
-            If the scan cannot be completed.
+        List of detected 7-bit I²C addresses.
         """
-        bus = self._require_bus()
 
         devices: list[int] = []
-
         try:
+            bus = self._require_bus()
+
             for address in range(
                 self.MIN_ADDRESS,
                 self.MAX_ADDRESS + 1,
             ):
                 try:
-                    bus.read_byte(address)
+                    bus.write_quick(address)
                     devices.append(address)
 
                 except OSError:

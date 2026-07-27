@@ -5,6 +5,7 @@ Abstract base classes for Sensora hardware communication buses.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from types import TracebackType
 from typing import Self
 
 
@@ -26,7 +27,7 @@ class BaseBus(ABC):
         self,
         exc_type: type[BaseException] | None,
         exc: BaseException | None,
-        traceback: object | None,
+        traceback: TracebackType | None,
     ) -> None:
         """Close the bus when leaving a context manager."""
         self.close()

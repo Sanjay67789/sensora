@@ -1,16 +1,8 @@
 """
-Hardware communication buses for Sensora.
-
-This package exposes platform-independent communication bus APIs.
-
-Applications should import buses from this package rather than using
-platform-specific implementations directly.
+Public bus interfaces exposed by Sensora.
 """
 
-from __future__ import annotations
-
 from sensora.buses.base import BaseBus
-from sensora.buses.discovery import ScannableBus
 from sensora.buses.exceptions import (
     BusAlreadyOpenError,
     BusError,
@@ -28,22 +20,18 @@ from sensora.buses.spi import SPIBus
 from sensora.buses.uart import UARTBus
 
 __all__ = [
-    # Base interfaces
     "BaseBus",
-    "ScannableBus",
-    # Public buses
-    "I2CBus",
-    "SPIBus",
-    "UARTBus",
-    "GPIOBus",
-    "OneWireBus",
-    # Exceptions
+    "BusAlreadyOpenError",
     "BusError",
     "BusNotOpenError",
-    "BusAlreadyOpenError",
     "BusScanError",
     "DeviceCommunicationError",
+    "GPIOBus",
+    "I2CBus",
     "InvalidAddressError",
-    "InvalidRegisterError",
     "InvalidDataError",
+    "InvalidRegisterError",
+    "OneWireBus",
+    "SPIBus",
+    "UARTBus",
 ]
