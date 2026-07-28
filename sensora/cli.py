@@ -17,8 +17,28 @@ app = typer.Typer(
     add_completion=False,
 )
 
-app.add_typer(scan_app, name="scan")
-app.add_typer(info_app, name="info")
-app.add_typer(doctor_app, name="doctor")
-app.add_typer(report_app, name="report")
-app.add_typer(devices_app, name="devices")
+
+app.add_typer(
+    scan_app,
+    name="scan",
+)
+
+app.add_typer(
+    info_app,
+    name="info",
+)
+
+app.add_typer(
+    doctor_app,
+    name="doctor",
+)
+
+app.add_typer(
+    report_app,
+    name="report",
+)
+
+app.add_typer(
+    devices_app,
+    name="devices",
+)

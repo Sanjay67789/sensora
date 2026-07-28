@@ -1,0 +1,48 @@
+id: ds18b20
+
+name: DS18B20 Digital Temperature Sensor
+
+vendor: maxim_integrated
+
+description: >
+  Digital 1-Wire temperature sensor with unique ROM address.
+  Commonly used in embedded systems, IoT monitoring,
+  and industrial temperature measurement.
+
+buses:
+  - onewire
+
+identification:
+  method: manual
+
+driver:
+  module: sensora.drivers.ds18b20
+  class: DS18B20Driver
+
+measurements:
+  - temperature
+
+electrical:
+  voltage:
+    min: 3.0
+    typical: 3.3
+    max: 5.5
+    unit: V
+
+features:
+  temperature_sensor: true
+  waterproof_probe_support: true
+  unique_rom_address: true
+  parasite_power_support: true
+  programmable_resolution: true
+
+metadata:
+  category: temperature_sensor
+  family: DS18B20
+  manufacturer: Maxim Integrated
+
+  notes:
+    - Uses Dallas 1-Wire communication protocol.
+    - Each device has a unique 64-bit ROM identifier.
+    - Temperature range is -55C to +125C.
+    - Resolution configurable from 9-bit to 12-bit.

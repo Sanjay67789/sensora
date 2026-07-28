@@ -1,0 +1,9 @@
+id: analog_devices
+
+name: Analog Devices
+
+description: >
+  Semiconductor manufacturer producing sensors and mixed-signal ICs.
+
+metadata:
+  category: semiconductor

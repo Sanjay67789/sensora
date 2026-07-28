@@ -46,10 +46,8 @@ def main(
     Scan the system and display all detected hardware devices.
     """
 
-    # Load device database
     registry = DatabaseLoader().load()
 
-    # Create identification engine
     matcher = DeviceMatcher(registry)
 
     scanner = Scanner()
@@ -58,7 +56,11 @@ def main(
 
         case "all":
 
-            scanner.register(I2CScanner(matcher=matcher))
+            scanner.register(
+                I2CScanner(
+                    matcher=matcher,
+                )
+            )
 
             scanner.register(SPIScanner())
 
@@ -68,7 +70,11 @@ def main(
 
         case "i2c":
 
-            scanner.register(I2CScanner(matcher=matcher))
+            scanner.register(
+                I2CScanner(
+                    matcher=matcher,
+                )
+            )
 
         case "spi":
 
@@ -92,7 +98,6 @@ def main(
             raise typer.Exit(code=1)
 
     if verbose:
-
         typer.secho(
             "Scanning hardware...",
             fg=typer.colors.CYAN,
@@ -104,23 +109,20 @@ def main(
 
     if json_output:
 
-        output = []
-
-        for device in devices:
-
-            output.append(
-                {
-                    "name": device.name,
-                    "bus": device.bus.name,
-                    "manufacturer": device.manufacturer,
-                    "address": (
-                        hex(device.address) if device.address is not None else None
-                    ),
-                    "status": device.status.name,
-                    "description": device.description,
-                    "metadata": device.metadata,
-                }
-            )
+        output = [
+            {
+                "name": device.name,
+                "bus": device.bus.name,
+                "manufacturer": device.manufacturer,
+                "address": (
+                    hex(device.address) if device.address is not None else None
+                ),
+                "status": device.status.name,
+                "description": device.description,
+                "metadata": device.metadata,
+            }
+            for device in devices
+        ]
 
         typer.echo(
             json.dumps(
@@ -143,7 +145,6 @@ def main(
         if verbose:
 
             for bus_result in result.buses:
-
                 typer.echo(f"{bus_result.name}: {bus_result.message}")
 
         typer.echo(f"Scan completed in {result.duration:.3f} s")
@@ -175,7 +176,6 @@ def main(
         typer.echo(f"    Status       : {device.status.name}")
 
         if device.description:
-
             typer.echo(f"    Description  : {device.description}")
 
         if device.metadata:

@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+from sensora.buses.exceptions import BusError
 from sensora.buses.onewire import OneWireBus
 from sensora.core.device import Device
 from sensora.core.enums import BusType, DeviceStatus
@@ -16,18 +17,18 @@ class OneWireScanner(BaseScanner):
     Discover devices on a 1-Wire bus.
     """
 
+    def __init__(
+        self,
+        bus: OneWireBus,
+    ) -> None:
+        self._bus = bus
+
     @property
     def name(self) -> str:
         """
         Human-readable scanner name.
         """
         return "1-Wire"
-
-    def __init__(
-        self,
-        bus: OneWireBus,
-    ) -> None:
-        self._bus = bus
 
     def scan(self) -> Result:
         """
@@ -63,7 +64,7 @@ class OneWireScanner(BaseScanner):
                 devices=devices,
             )
 
-        except Exception as exc:
+        except BusError as exc:
             return Result(
                 success=False,
                 message="Failed to scan 1-Wire bus.",

@@ -1,0 +1,89 @@
+id: adxl345
+
+name: ADXL345 3-Axis Digital Accelerometer
+
+vendor: analog_devices
+
+description: >
+  Digital 3-axis accelerometer with I2C and SPI communication support.
+  Commonly used in robotics, IoT, motion detection, and embedded systems.
+
+buses:
+  - i2c
+  - spi
+
+addresses:
+  - "0x53"
+  - "0x1D"
+
+chip_id: "0xE5"
+
+identification:
+  method: register
+  register: "0x00"
+  expected: "0xE5"
+  width: 8
+
+interfaces:
+
+  i2c:
+    supported: true
+    addresses:
+      - "0x53"
+      - "0x1D"
+    speed: 400000
+
+  spi:
+    supported: true
+    mode: 3
+    speed: 5000000
+
+driver:
+  module: sensora.drivers.adxl345
+  class: ADXL345Driver
+
+measurements:
+  - acceleration_x
+  - acceleration_y
+  - acceleration_z
+  - tilt
+  - motion_detection
+
+electrical:
+  voltage:
+    min: 2.0
+    typical: 3.3
+    max: 3.6
+    unit: V
+
+  current:
+    typical: 140
+    maximum: 250
+    unit: mA
+
+package:
+  type: LGA
+  pins: 8
+
+features:
+  accelerometer: true
+  three_axis: true
+  tap_detection: true
+  free_fall_detection: true
+  activity_detection: true
+  spi_support: true
+  i2c_support: true
+
+metadata:
+  category: motion_sensor
+  family: ADXL345
+  manufacturer: Analog Devices
+
+  datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ADXL345.pdf
+
+  notes:
+    - Device ID register is 0x00.
+    - Expected Device ID value is 0xE5.
+    - ALT address pin selects I2C address.
+    - ALT LOW = 0x53.
+    - ALT HIGH = 0x1D.

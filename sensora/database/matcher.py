@@ -4,6 +4,8 @@ Device identification engine for Sensora.
 
 from __future__ import annotations
 
+from typing import Any
+
 from sensora.core.device import Device
 from sensora.core.enums import BusType, DeviceStatus
 from sensora.database.registry import DeviceRegistry
@@ -26,17 +28,7 @@ class DeviceMatcher:
         address: int,
     ) -> Device | None:
         """
-        Match an I2C device using its address.
-
-        Parameters
-        ----------
-        address
-            Detected 7-bit I2C address.
-
-        Returns
-        -------
-        Device | None
-            Identified device or None.
+        Match an I2C device using address.
         """
 
         address_hex = f"0x{address:02X}"
@@ -50,13 +42,34 @@ class DeviceMatcher:
                 return self._create_device(
                     definition,
                     address,
+                    BusType.I2C,
                 )
 
         return None
 
+    def create_unknown_i2c(
+        self,
+        address: int,
+    ) -> Device:
+        """
+        Create an unidentified I2C device.
+        """
+
+        return Device(
+            name=f"Unknown I²C Device (0x{address:02X})",
+            manufacturer=None,
+            bus=BusType.I2C,
+            address=address,
+            status=DeviceStatus.UNKNOWN,
+            description="No matching database definition found.",
+            metadata={
+                "identified": False,
+            },
+        )
+
     def _match_address(
         self,
-        addresses,
+        addresses: Any,
         address: str,
     ) -> bool:
         """
@@ -68,44 +81,48 @@ class DeviceMatcher:
 
         if isinstance(addresses, dict):
 
-            for value in addresses.values():
+            for values in addresses.values():
 
-                if isinstance(value, list) and address in value:
+                if isinstance(values, list) and address in values:
                     return True
 
-                if isinstance(value, str) and address == value:
+                if isinstance(values, str) and address == values:
                     return True
 
         return False
 
     def _create_device(
         self,
-        definition,
+        definition: Any,
         address: int,
+        bus: BusType,
     ) -> Device:
         """
-        Convert database definition into runtime Device.
+        Convert database definition into runtime device.
         """
 
-        bus = BusType.I2C
+        detected_bus = bus
 
         if definition.buses:
 
             try:
-                bus = BusType(definition.buses[0])
+                detected_bus = BusType(
+                    definition.buses[0]
+                )
 
             except ValueError:
-                bus = BusType.I2C
+                pass
 
         return Device(
             name=definition.name,
             manufacturer=definition.vendor,
-            bus=bus,
+            bus=detected_bus,
             address=address,
-            status=DeviceStatus.DETECTED,
+            status=DeviceStatus.IDENTIFIED,
             description=definition.description,
             metadata={
                 "definition_id": definition.id,
                 "identified": True,
+                "measurements": definition.measurements,
             },
         )
