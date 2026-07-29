@@ -4,10 +4,9 @@ Device identification engine for Sensora.
 
 from __future__ import annotations
 
-from typing import Any
-
 from sensora.core.device import Device
 from sensora.core.enums import BusType, DeviceStatus
+from sensora.database.models import DeviceDefinition
 from sensora.database.registry import DeviceRegistry
 
 
@@ -23,36 +22,39 @@ class DeviceMatcher:
     ) -> None:
         self._registry = registry
 
+    # ------------------------------------------------------------------
+    # I²C
+    # ------------------------------------------------------------------
+
     def match_i2c(
         self,
         address: int,
     ) -> Device | None:
         """
-        Match an I2C device using address.
+        Match an I²C device using its address.
         """
 
-        address_hex = f"0x{address:02X}"
+        definition = self._registry.find_i2c_device(address)
 
-        for definition in self._registry.devices:
+        if definition is None:
+            return None
 
-            if self._match_address(
-                definition.addresses,
-                address_hex,
-            ):
-                return self._create_device(
-                    definition,
-                    address,
-                    BusType.I2C,
-                )
+        return self._create_device(
+            definition=definition,
+            address=address,
+            bus=BusType.I2C,
+        )
 
-        return None
+    # ------------------------------------------------------------------
+    # Unknown devices
+    # ------------------------------------------------------------------
 
     def create_unknown_i2c(
         self,
         address: int,
     ) -> Device:
         """
-        Create an unidentified I2C device.
+        Create an unidentified I²C device.
         """
 
         return Device(
@@ -67,62 +69,48 @@ class DeviceMatcher:
             },
         )
 
-    def _match_address(
-        self,
-        addresses: Any,
-        address: str,
-    ) -> bool:
-        """
-        Check address compatibility.
-        """
-
-        if isinstance(addresses, list):
-            return address in addresses
-
-        if isinstance(addresses, dict):
-
-            for values in addresses.values():
-
-                if isinstance(values, list) and address in values:
-                    return True
-
-                if isinstance(values, str) and address == values:
-                    return True
-
-        return False
+    # ------------------------------------------------------------------
+    # Helpers
+    # ------------------------------------------------------------------
 
     def _create_device(
         self,
-        definition: Any,
+        definition: DeviceDefinition,
         address: int,
         bus: BusType,
     ) -> Device:
         """
-        Convert database definition into runtime device.
+        Convert a database definition into a runtime Device.
         """
 
         detected_bus = bus
 
-        if definition.buses:
-
+        for interface_name in definition.interfaces:
             try:
-                detected_bus = BusType(
-                    definition.buses[0]
-                )
-
+                detected_bus = BusType(interface_name)
+                break
             except ValueError:
-                pass
+                continue
 
         return Device(
             name=definition.name,
             manufacturer=definition.vendor,
             bus=detected_bus,
             address=address,
+            chip_id=None,
             status=DeviceStatus.IDENTIFIED,
             description=definition.description,
             metadata={
                 "definition_id": definition.id,
                 "identified": True,
+                "interfaces": definition.interfaces,
+                "identification": definition.identification,
+                "driver": definition.driver,
+                "linux": definition.linux,
                 "measurements": definition.measurements,
+                "electrical": definition.electrical,
+                "package": definition.package,
+                "features": definition.features,
+                "metadata": definition.metadata,
             },
         )

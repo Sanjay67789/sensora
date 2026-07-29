@@ -100,3 +100,4 @@ class DeviceDefinition:
 
     # Optional metadata.
     metadata: dict[str, Any] = field(default_factory=dict)
+
