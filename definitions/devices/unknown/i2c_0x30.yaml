@@ -1,0 +1,45 @@
+id: i2c_0x30
+
+name: Unknown I2C Device (0x30)
+
+vendor: unknown
+
+description: >
+  Unknown device detected at I2C address 0x30.
+
+buses:
+  - i2c
+
+addresses:
+  - "0x30"
+
+identification:
+  method: address
+
+interfaces:
+
+  i2c:
+    supported: true
+    addresses:
+      - "0x30"
+    speed: 400000
+
+driver:
+  module: null
+  class: null
+
+measurements: []
+
+electrical: {}
+
+package: {}
+
+features: {}
+
+metadata:
+  category: unknown
+  manufacturer: Unknown
+
+  notes:
+    - Address 0x30 is shared by multiple devices.
+    - Register identification required.

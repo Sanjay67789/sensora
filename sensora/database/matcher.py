@@ -92,6 +92,23 @@ class DeviceMatcher:
             except ValueError:
                 continue
 
+        metadata = {
+            "definition_id": definition.id,
+            "identified": True,
+            "interfaces": definition.interfaces,
+            "identification": definition.identification,
+            "driver": definition.driver,
+            "linux": definition.linux,
+            "measurements": definition.measurements,
+            "electrical": definition.electrical,
+            "package": definition.package,
+            "features": definition.features,
+        }
+
+        # Merge custom metadata from the database into the top level.
+        if definition.metadata:
+            metadata.update(definition.metadata)
+
         return Device(
             name=definition.name,
             manufacturer=definition.vendor,
@@ -100,17 +117,5 @@ class DeviceMatcher:
             chip_id=None,
             status=DeviceStatus.IDENTIFIED,
             description=definition.description,
-            metadata={
-                "definition_id": definition.id,
-                "identified": True,
-                "interfaces": definition.interfaces,
-                "identification": definition.identification,
-                "driver": definition.driver,
-                "linux": definition.linux,
-                "measurements": definition.measurements,
-                "electrical": definition.electrical,
-                "package": definition.package,
-                "features": definition.features,
-                "metadata": definition.metadata,
-            },
+            metadata=metadata,
         )

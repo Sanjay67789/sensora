@@ -1,0 +1,49 @@
+id: at24_series
+
+name: AT24 Series EEPROM
+
+vendor: microchip
+
+description: >
+  Possible AT24-compatible I2C EEPROM detected by its
+  default I2C address.
+
+buses:
+  - i2c
+
+addresses:
+  - "0x50"
+
+identification:
+  method: address
+
+interfaces:
+
+  i2c:
+    supported: true
+    addresses:
+      - "0x50"
+    speed: 400000
+
+driver:
+  module: null
+  class: null
+
+measurements: []
+
+electrical: null
+
+package: null
+
+features:
+  eeprom: true
+  non_volatile_memory: true
+
+metadata:
+  category: memory
+  family: AT24
+  manufacturer: Microchip
+
+  notes:
+    - Address match only.
+    - Register verification not implemented.

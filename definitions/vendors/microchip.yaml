@@ -1,0 +1,10 @@
+id: microchip
+
+name: Microchip Technology
+
+description: >
+  Semiconductor manufacturer of microcontrollers,
+  EEPROMs, analog ICs and embedded solutions.
+
+metadata:
+  category: semiconductor
