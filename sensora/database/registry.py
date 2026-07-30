@@ -98,22 +98,16 @@ class DeviceRegistry:
         """
         return self._devices.get(device_id)
 
+    # ------------------------------------------------------------------
+    # I²C
+    # ------------------------------------------------------------------
+
     def find_i2c_device(
         self,
         address: int,
     ) -> DeviceDefinition | None:
         """
         Find a device definition using an I²C address.
-
-        Parameters
-        ----------
-        address
-            7-bit I²C device address.
-
-        Returns
-        -------
-        DeviceDefinition | None
-            Matching device definition if found.
         """
 
         hex_address = f"0x{address:02X}"
@@ -131,6 +125,53 @@ class DeviceRegistry:
             )
 
             if hex_address in addresses:
+                return device
+
+        return None
+
+    # ------------------------------------------------------------------
+    # 1-Wire
+    # ------------------------------------------------------------------
+
+    def find_onewire_device(
+        self,
+        family_code: str,
+    ) -> DeviceDefinition | None:
+        """
+        Find a device definition using a 1-Wire family code.
+
+        Parameters
+        ----------
+        family_code
+            Two-character hexadecimal family code
+            (for example "28").
+
+        Returns
+        -------
+        DeviceDefinition | None
+            Matching device definition if found.
+        """
+
+        family_code = family_code.upper()
+
+        for device in self._devices.values():
+
+            onewire_interface = device.interfaces.get("onewire")
+
+            if not onewire_interface:
+                continue
+
+            identification = device.identification
+
+            if identification.get("method") != "family_code":
+                continue
+
+            expected = identification.get("family_code")
+
+            if expected is None:
+                continue
+
+            if str(expected).upper() == family_code:
                 return device
 
         return None

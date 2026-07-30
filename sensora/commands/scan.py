@@ -41,7 +41,12 @@ def main(
             scanner.register(I2CScanner(matcher=matcher))
             scanner.register(SPIScanner())
             scanner.register(UARTScanner())
-            scanner.register(OneWireScanner(LinuxOneWireBus()))
+            scanner.register(
+                OneWireScanner(
+                    bus=LinuxOneWireBus(),
+                    matcher=matcher,
+                )
+            )
         case "i2c":
             scanner.register(I2CScanner(matcher=matcher))
         case "spi":
@@ -49,7 +54,12 @@ def main(
         case "uart":
             scanner.register(UARTScanner())
         case "onewire":
-            scanner.register(OneWireScanner(LinuxOneWireBus()))
+            scanner.register(
+                OneWireScanner(
+                    bus=LinuxOneWireBus(),
+                    matcher=matcher,
+                )
+            )
         case _:
             typer.secho(f"Unsupported bus '{bus}'.", fg=typer.colors.RED)
             raise typer.Exit(code=1)
@@ -91,7 +101,11 @@ def main(
         typer.echo(f"Scan completed in {result.duration:.3f} s")
         return
 
-    typer.secho(f"Found {len(devices)} device(s)\n", fg=typer.colors.GREEN, bold=True)
+    typer.secho(
+        f"Found {len(devices)} device(s)\n",
+        fg=typer.colors.GREEN,
+        bold=True,
+    )
 
     for index, device in enumerate(devices, start=1):
         if debug:

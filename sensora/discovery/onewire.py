@@ -7,8 +7,8 @@ from __future__ import annotations
 from sensora.buses.exceptions import BusError
 from sensora.buses.onewire import OneWireBus
 from sensora.core.device import Device
-from sensora.core.enums import BusType, DeviceStatus
 from sensora.core.result import Result
+from sensora.database.matcher import DeviceMatcher
 from sensora.discovery.base import BaseScanner
 
 
@@ -20,8 +20,10 @@ class OneWireScanner(BaseScanner):
     def __init__(
         self,
         bus: OneWireBus,
+        matcher: DeviceMatcher,
     ) -> None:
         self._bus = bus
+        self._matcher = matcher
 
     @property
     def name(self) -> str:
@@ -46,17 +48,20 @@ class OneWireScanner(BaseScanner):
             self._bus.open()
 
             for rom in self._bus.scan():
-                devices.append(
-                    Device(
-                        name="Unknown 1-Wire Device",
-                        bus=BusType.ONEWIRE,
-                        status=DeviceStatus.DETECTED,
-                        description="Detected during 1-Wire scan.",
-                        metadata={
-                            "rom": rom,
-                        },
-                    )
+
+                family_code = rom.split("-")[0].upper()
+
+                device = self._matcher.match_onewire(
+                    family_code=family_code,
+                    rom=rom,
                 )
+
+                if device is None:
+                    device = self._matcher.create_unknown_onewire(
+                        rom=rom,
+                    )
+
+                devices.append(device)
 
             return Result(
                 success=True,

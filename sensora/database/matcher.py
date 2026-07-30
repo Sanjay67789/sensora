@@ -41,8 +41,32 @@ class DeviceMatcher:
 
         return self._create_device(
             definition=definition,
-            address=address,
             bus=BusType.I2C,
+            address=address,
+        )
+
+    # ------------------------------------------------------------------
+    # 1-Wire
+    # ------------------------------------------------------------------
+
+    def match_onewire(
+        self,
+        family_code: str,
+        rom: str,
+    ) -> Device | None:
+        """
+        Match a 1-Wire device using its family code.
+        """
+
+        definition = self._registry.find_onewire_device(family_code)
+
+        if definition is None:
+            return None
+
+        return self._create_device(
+            definition=definition,
+            bus=BusType.ONEWIRE,
+            rom=rom,
         )
 
     # ------------------------------------------------------------------
@@ -69,6 +93,29 @@ class DeviceMatcher:
             },
         )
 
+    def create_unknown_onewire(
+        self,
+        rom: str,
+    ) -> Device:
+        """
+        Create an unidentified 1-Wire device.
+        """
+
+        family_code = rom.split("-")[0].upper()
+
+        return Device(
+            name="Unknown 1-Wire Device",
+            manufacturer=None,
+            bus=BusType.ONEWIRE,
+            status=DeviceStatus.UNKNOWN,
+            description="No matching database definition found.",
+            metadata={
+                "identified": False,
+                "rom": rom,
+                "family_code": family_code,
+            },
+        )
+
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
@@ -76,8 +123,9 @@ class DeviceMatcher:
     def _create_device(
         self,
         definition: DeviceDefinition,
-        address: int,
         bus: BusType,
+        address: int | None = None,
+        rom: str | None = None,
     ) -> Device:
         """
         Convert a database definition into a runtime Device.
@@ -105,9 +153,12 @@ class DeviceMatcher:
             "features": definition.features,
         }
 
-        # Merge custom metadata from the database into the top level.
         if definition.metadata:
             metadata.update(definition.metadata)
+
+        if rom is not None:
+            metadata["rom"] = rom
+            metadata["family_code"] = rom.split("-")[0].upper()
 
         return Device(
             name=definition.name,
