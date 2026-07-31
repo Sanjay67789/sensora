@@ -40,14 +40,64 @@ Sensora is under active development. APIs, commands, and the device database may
 
 🔍 Overview
 
-🤔 Why Sensora?
+## 🤔 Why Sensora?
 
-✨ Features
+Most Linux hardware utilities solve **one problem well**. Sensora combines discovery, identification, diagnostics and reporting into a single framework.
 
-🔌 Supported Buses
+| Tool | Discover | Identify | Diagnose | Reports |
+|------|:--------:|:--------:|:--------:|:-------:|
+| `i2cdetect` | ✅ | ❌ | ❌ | ❌ |
+| `i2c-tools` | ✅ | ❌ | ❌ | ❌ |
+| `lm-sensors` | ⚠️ | ✅ | ✅ | ❌ |
+| Linux IIO | ✅ | ⚠️ | ❌ | ❌ |
+| **Sensora** | ✅ | ✅ | ✅ | ✅ |
 
-</td>
-<td valign="top" width="33%">
+> **One framework. One CLI. Multiple hardware buses.**
+## ## ✨ Features
+
+### 🔍 Hardware Discovery
+- Automatic device discovery
+- Multi-bus scanning
+- Linux hardware abstraction
+- Raspberry Pi & Embedded Linux support
+
+### 🧠 Intelligent Identification
+**Available**
+- Address matching
+- Device database
+- Unknown device detection
+
+**Planned**
+- Register fingerprinting
+- Chip-ID verification
+- Confidence scoring
+
+### 🩺 Diagnostics
+- Bus validation
+- Health checks
+- Communication diagnostics
+- Error reporting
+
+### 📊 Reporting
+- System summary
+- Hardware inventory
+- Health reports
+- Database statistics
+## ## 🔌 Supported Buses
+
+| Bus | Support |
+|------|---------|
+| I²C | ✅ |
+| SPI | ✅ |
+| UART | ✅ |
+| 1-Wire | ✅ |
+| GPIO | 🚧 |
+| USB | 🚧 |
+| CAN | 🚧 |
+| HID | 🚧 |
+| Bluetooth | 🚧 |
+| Modbus | 🚧 |
+## ⚙️ Installation
 
 ⚙️ Installation
 
@@ -55,12 +105,34 @@ Sensora is under active development. APIs, commands, and the device database may
 
 🖥️ Example Output
 
-🏗️ Architecture
+## 🏗️ Architecture
 
-</td>
-<td valign="top" width="33%">
+```mermaid
+flowchart LR
+    A[Hardware Discovery] --> B[Bus Layer]
+    B --> C[Device Enumeration]
+    C --> D[Device Matcher]
+    D --> E[Diagnostics]
+    E --> F[Health Assessment]
+    F --> G[Reports]
+```
+## ## 📁 Project Structure
 
-📁 Project Structure
+```text
+sensora/
+├── buses/
+├── commands/
+├── core/
+├── database/
+├── definitions/
+├── diagnostics/
+├── discovery/
+├── reports/
+├── utils/
+├── cli.py
+└── pyproject.toml
+```
+## 📌 Development Status
 
 📌 Development Status
 
