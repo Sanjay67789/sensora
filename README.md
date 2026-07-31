@@ -24,36 +24,49 @@
 
 <br/>
 
-> **Sensora** is a modern, open-source hardware **discovery, identification, diagnostics, and management framework** for Embedded Linux — unifying what usually takes five different tools into one extensible CLI.
+Sensora is a modern, open-source hardware discovery, identification, diagnostics, and management framework for Embedded Linux — unifying what usually takes five different tools into one extensible CLI.
 
 <br/>
 
-## 📚 Table of Contents
+⚠️ Pre-Alpha Notice
+
+Sensora is under active development. APIs, commands, and the device database may change before the first stable release.
+
+📚 Table of Contents
 
 <table>
 <tr>
 <td valign="top" width="33%">
 
-- [🔍 Overview](#-overview)
-- [🤔 Why Sensora?](#-why-sensora)
-- [✨ Features](#-features)
-- [🔌 Supported Buses](#-supported-buses)
+🔍 Overview
+
+🤔 Why Sensora?
+
+✨ Features
+
+🔌 Supported Buses
 
 </td>
 <td valign="top" width="33%">
 
-- [⚙️ Installation](#️-installation)
-- [🚀 Quick Start](#-quick-start)
-- [🖥️ Example Output](#️-example-output)
-- [🏗️ Architecture](#️-architecture)
+⚙️ Installation
+
+🚀 Quick Start
+
+🖥️ Example Output
+
+🏗️ Architecture
 
 </td>
 <td valign="top" width="33%">
 
-- [📁 Project Structure](#-project-structure)
-- [📌 Development Status](#-development-status)
-- [🗺️ Roadmap](#️-roadmap)
-- [🤝 Contributing](#-contributing)
+📁 Project Structure
+
+📌 Development Status
+
+🗺️ Roadmap
+
+🤝 Contributing
 
 </td>
 </tr>
@@ -61,99 +74,202 @@
 
 <br/>
 
-## 🔍 Overview
+🔍 Overview
 
-Sensora is an open-source hardware discovery, identification, diagnostics, and management framework designed for **Linux-based embedded systems**.
+Sensora is an open-source hardware discovery, identification, diagnostics, and management framework designed for Linux-based embedded systems.
 
 It automatically discovers hardware connected through multiple communication buses, intelligently identifies devices using hardware-aware detection techniques, validates communication, performs diagnostics, and generates detailed hardware reports.
 
-> Unlike traditional Linux utilities that focus on a single task, Sensora provides a **unified framework** for hardware inspection and diagnostics.
+Unlike traditional Linux utilities that focus on a single task, Sensora provides a unified framework for hardware inspection and diagnostics.
 
 <br/>
 
 <div align="center">
 
-### 🎯 Designed For
+🎯 Designed For
 
-| | | | |
-|:---:|:---:|:---:|:---:|
-| 🍓 Raspberry Pi | 🟢 NVIDIA Jetson | 🍊 Orange Pi | 🐝 BeagleBone |
-| 🪨 Rock Pi | 🏭 Industrial SBCs | 🚗 Automotive Prototypes | 📡 IoT Gateways |
-| 🤖 Robotics | 🐧 Embedded Linux Dev | 🧪 Hardware Validation & Testing | |
+
+
+
+
+
+
+
+
+🍓 Raspberry Pi
+
+🟢 NVIDIA Jetson
+
+🍊 Orange Pi
+
+🐝 BeagleBone
+
+🪨 Rock Pi
+
+🏭 Industrial SBCs
+
+🚗 Automotive Prototypes
+
+📡 IoT Gateways
+
+🤖 Robotics
+
+🐧 Embedded Linux Dev
+
+🧪 Hardware Validation & Testing
+
+
 
 </div>
 
 <br/>
 
-## 🤔 Why Sensora?
+🤔 Why Sensora?
 
 Most Linux hardware tools solve only one part of the problem — Sensora brings them together.
 
 <div align="center">
 
-| Tool | Discovery | Identification | Diagnostics | Reports |
-|:--|:---:|:---:|:---:|:---:|
-| `i2cdetect` | ✅ | ❌ | ❌ | ❌ |
-| `i2c-tools` | ✅ | ❌ | ❌ | ❌ |
-| `lm-sensors` | ⚠️ | ✅ | ✅ | ❌ |
-| Linux IIO | ✅ | ⚠️ | ❌ | ❌ |
-| **Sensora** | ✅ | ✅ | ✅ | ✅ |
+Tool
+
+Discovery
+
+Identification
+
+Diagnostics
+
+Reports
+
+i2cdetect
+
+✅
+
+❌
+
+❌
+
+❌
+
+i2c-tools
+
+✅
+
+❌
+
+❌
+
+❌
+
+lm-sensors
+
+⚠️
+
+✅
+
+✅
+
+❌
+
+Linux IIO
+
+✅
+
+⚠️
+
+❌
+
+❌
+
+Sensora
+
+✅
+
+✅
+
+✅
+
+✅
 
 </div>
 
 <br/>
 
-## ✨ Features
+✨ Features
 
 <table>
 <tr>
 <td width="50%" valign="top">
 
-### 🔎 Hardware Discovery
-- Automatic device discovery
-- Multi-bus scanning
-- Linux hardware abstraction
-- Fast scanning engine
-- Embedded Linux support
-- Raspberry Pi optimized
+🔎 Hardware Discovery
+
+Automatic device discovery
+
+Multi-bus scanning
+
+Linux hardware abstraction
+
+Fast scanning engine
+
+Embedded Linux support
+
+Raspberry Pi optimized
 
 </td>
 <td width="50%" valign="top">
 
-### 🧠 Intelligent Identification
-**Available now**
-- Device database
-- Address matching
-- Unknown device detection
+🧠 Intelligent Identification
 
-**Coming soon**
-- Register fingerprinting
-- Chip ID verification
-- Confidence scoring
+Available now
+
+Device database
+
+Address matching
+
+Unknown device detection
+
+Coming soon
+
+Register fingerprinting
+
+Chip ID verification
+
+Confidence scoring
 
 </td>
 </tr>
 <tr>
 <td width="50%" valign="top">
 
-### 🩺 Diagnostics
-- Bus validation
-- Hardware health checks
-- Communication diagnostics
-- Device availability checks
-- Error reporting
-- Hardware inspection
+🩺 Diagnostics
+
+Bus validation
+
+Hardware health checks
+
+Communication diagnostics
+
+Device availability checks
+
+Error reporting
+
+Hardware inspection
 
 </td>
 <td width="50%" valign="top">
 
-### 📊 Reporting
-- System information
-- Hardware inventory
-- Device status
-- Health summary
-- Database statistics
-- Bus information
+📊 Reporting
+
+System information
+
+Hardware inventory
+
+Device status
+
+Health summary
+
+Database statistics
+
+Bus information
 
 </td>
 </tr>
@@ -161,114 +277,124 @@ Most Linux hardware tools solve only one part of the problem — Sensora brings 
 
 <br/>
 
-## 🔌 Supported Buses
+🔌 Supported Buses
 
 <div align="center">
 
-| Bus | Status |
-|:--|:--:|
-| I²C | ✅ Supported |
-| SPI | ✅ Supported |
-| UART | ✅ Supported |
-| 1-Wire | ✅ Supported |
-| GPIO | 🚧 Planned |
-| USB | 🚧 Planned |
-| CAN | 🚧 Planned |
-| HID | 🚧 Planned |
-| Bluetooth | 🚧 Planned |
-| Modbus | 🚧 Planned |
+Bus
+
+Status
+
+I²C
+
+✅ Supported
+
+SPI
+
+✅ Supported
+
+UART
+
+✅ Supported
+
+1-Wire
+
+✅ Supported
+
+GPIO
+
+🚧 Planned
+
+USB
+
+🚧 Planned
+
+CAN
+
+🚧 Planned
+
+HID
+
+🚧 Planned
+
+Bluetooth
+
+🚧 Planned
+
+Modbus
+
+🚧 Planned
 
 </div>
 
 <br/>
 
-## ⚙️ Installation
+⚙️ Installation
 
-**1. Clone the repository**
+1. Clone the repository
 
-```bash
 git clone https://github.com/Sanjay67789/sensora.git
 cd sensora
-```
 
-**2. Create a virtual environment**
+2. Create a virtual environment
 
-```bash
 python3 -m venv .venv
 source .venv/bin/activate
-```
 
-**3. Install**
+3. Install
 
-```bash
 pip install -e .
-```
 
 <br/>
 
-## 🚀 Quick Start
+🚀 Quick Start
 
 <table>
 <tr><th align="left">Command</th><th align="left">Description</th></tr>
 <tr><td>
 
-```bash
 sensora info
-```
 
 </td><td>Display system information</td></tr>
 <tr><td>
 
-```bash
 sensora scan
-```
 
 </td><td>Scan hardware</td></tr>
 <tr><td>
 
-```bash
 sensora scan --bus i2c --verbose
-```
 
 </td><td>Verbose I²C scan</td></tr>
 <tr><td>
 
-```bash
 sensora doctor
-```
 
 </td><td>Run diagnostics</td></tr>
 <tr><td>
 
-```bash
 sensora report
-```
 
 </td><td>Generate full report</td></tr>
 <tr><td>
 
-```bash
 sensora report --quick
-```
 
 </td><td>Generate quick report</td></tr>
 <tr><td>
 
-```bash
 sensora devices
-```
 
 </td><td>List supported devices</td></tr>
 </table>
 
 <br/>
 
-## 🖥️ Example Output
+🖥️ Example Output
 
 <details open>
 <summary><b>🔍 Scan</b></summary>
 
-```text
 $ sensora scan --bus i2c --verbose
 
 Found 3 device(s)
@@ -281,14 +407,12 @@ Found 3 device(s)
 
 [3] Unknown I²C Device
     Address : 0x50
-```
 
 </details>
 
 <details>
 <summary><b>📊 Report</b></summary>
 
-```text
 $ sensora report
 
 System
@@ -308,15 +432,13 @@ Detected Hardware
 Health Summary
 --------------
 GOOD WITH WARNINGS
-```
 
 </details>
 
 <br/>
 
-## 🏗️ Architecture
+🏗️ Architecture
 
-```mermaid
 %%{init: {
   "theme": "base",
   "themeVariables": {
@@ -343,15 +465,13 @@ flowchart TD
     classDef diag fill:#f59e0b,stroke:#fbbf24,stroke-width:1.5px,color:#111827
     classDef health fill:#ef4444,stroke:#f87171,stroke-width:1.5px,color:#ffffff
     classDef finish fill:#22c55e,stroke:#4ade80,stroke-width:2px,color:#052e16,font-weight:bold
-```
 
 <sub>💡 GitHub renders Mermaid diagrams natively — this flow updates live as the pipeline evolves.</sub>
 
 <br/>
 
-## 📁 Project Structure
+📁 Project Structure
 
-```text
 sensora/
 ├── buses/          # I²C, SPI, UART, 1-Wire backends
 ├── commands/        # CLI command implementations
@@ -365,15 +485,14 @@ sensora/
 ├── cli.py                         # CLI entry point
 ├── pyproject.toml
 └── README.md
-```
 
 <br/>
 
-## 📌 Development Status
+📌 Development Status
 
 <div align="center">
 
-**Current Release:** 🟠 **Pre-Alpha**
+Current Release: 🟠 Pre-Alpha
 
 </div>
 
@@ -381,30 +500,48 @@ sensora/
 <tr>
 <td width="50%" valign="top">
 
-### ✅ Implemented
-- Linux bus abstraction
-- CLI
-- I²C scanning
-- SPI scanning
-- UART scanning
-- 1-Wire scanning
-- Device database
-- Intelligent matcher
-- Diagnostics
-- Report generation
-- Raspberry Pi support
-- Generic Embedded Linux support
+✅ Implemented
+
+Linux bus abstraction
+
+CLI
+
+I²C scanning
+
+SPI scanning
+
+UART scanning
+
+1-Wire scanning
+
+Device database
+
+Intelligent matcher
+
+Diagnostics
+
+Report generation
+
+Raspberry Pi support
+
+Generic Embedded Linux support
 
 </td>
 <td width="50%" valign="top">
 
-### 🚧 In Development
-- Register fingerprinting
-- Chip ID verification
-- Detector plugins
-- Improved matching engine
-- Vendor-specific identification
-- Hardware validation
+🚧 In Development
+
+Register fingerprinting
+
+Chip ID verification
+
+Detector plugins
+
+Improved matching engine
+
+Vendor-specific identification
+
+Hardware validation
 
 </td>
 </tr>
@@ -412,7 +549,7 @@ sensora/
 
 <br/>
 
-## 🗺️ Roadmap
+🗺️ Roadmap
 
 <table>
 <tr><th>Version</th><th>Milestones</th></tr>
@@ -436,23 +573,35 @@ sensora/
 
 <br/>
 
-## 🎯 Design Goals
+🎯 Design Goals
 
 <div align="center">
 
-`Lightweight` • `Fast` • `Extensible` • `Vendor-independent` • `Hardware-aware` • `Scriptable` • `Production-ready` • `Embedded-first`
+Lightweight • Fast • Extensible • Vendor-independent • Hardware-aware • Scriptable • Production-ready • Embedded-first
 
 </div>
 
 <br/>
 
-## 🔭 Vision
+🌟 Key Highlights
 
-Sensora aims to become the **standard open-source hardware discovery and diagnostics framework** for Embedded Linux — supporting hundreds of sensors, EEPROMs, ADCs, DACs, GPIO expanders, displays, communication modules, industrial peripherals, and automotive hardware through an extensible detector architecture.
+Unified hardware discovery framework for Embedded Linux
+
+Intelligent device identification (address, register and chip-ID based)
+
+Multi-bus architecture with an extensible plugin design
+
+Designed for Raspberry Pi, SBCs, robotics, automotive and industrial systems
+
+Modern Python codebase with type hints and clean architecture
+
+🔭 Vision
+
+Sensora aims to become the standard open-source hardware discovery and diagnostics framework for Embedded Linux — supporting hundreds of sensors, EEPROMs, ADCs, DACs, GPIO expanders, displays, communication modules, industrial peripherals, and automotive hardware through an extensible detector architecture.
 
 <br/>
 
-## 🛠️ Development
+🛠️ Development
 
 Sensora follows modern Python development practices:
 
@@ -469,40 +618,44 @@ Sensora follows modern Python development practices:
 
 <br/>
 
-## 🤝 Contributing
+🤝 Contributing
 
 Contributions are welcome! Areas where you can help:
 
-- 🔌 Hardware detectors
-- 🚌 Bus implementations
-- 🩺 Diagnostics
-- 📖 Documentation
-- 🧪 Unit tests
-- 💡 Examples
-- ⚡ Performance improvements
+🔌 Hardware detectors
 
-> Please open an issue before implementing major changes.
+🚌 Bus implementations
+
+🩺 Diagnostics
+
+📖 Documentation
+
+🧪 Unit tests
+
+💡 Examples
+
+⚡ Performance improvements
+
+Please open an issue before implementing major changes.
 
 <br/>
 
-## 📄 License
+📄 License
 
-```
 Copyright © 2026 Sanjay Kumar P
 Licensed under the Apache License 2.0.
-```
 
-See the [LICENSE](./LICENSE) file for details.
+See the LICENSE file for details.
 
 <br/>
 
-## 👤 Author
+👤 Author
 
 <div align="center">
 
 <img src="https://img.shields.io/badge/Sanjay_Kumar_P-Electronics_%26_Communication_Engineering-1e293b?style=for-the-badge&logo=github&logoColor=white" />
 
-**Embedded Systems • Linux • IoT • Hardware Diagnostics**
+Embedded Systems • Linux • IoT • Hardware Diagnostics
 
 <a href="https://github.com/Sanjay67789">
   <img src="https://img.shields.io/badge/GitHub-@Sanjay67789-181717?style=for-the-badge&logo=github&logoColor=white" />
@@ -514,10 +667,26 @@ See the [LICENSE](./LICENSE) file for details.
 
 <div align="center">
 
-### ⭐ If you find Sensora useful, please consider giving the repository a star.
+⭐ If you find Sensora useful, please consider giving the repository a star.
 
 Built with ❤️ for the Embedded Linux community.
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=100&section=footer" width="100%"/>
 
 </div>
+
+❤️ Acknowledgements
+
+Sensora is an independent open-source project created and maintained by Sanjay Kumar P.
+
+Special thanks to the Embedded Linux and Python open-source communities whose libraries, tools, and documentation have inspired this project.
+
+📈 Project Goals
+
+Become the standard hardware discovery framework for Embedded Linux.
+
+Support hundreds of sensors and peripherals.
+
+Provide a stable API for developers and integrators.
+
+Enable automated diagnostics and monitoring workflows.
