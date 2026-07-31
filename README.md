@@ -1,8 +1,10 @@
 <div align="center">
 
-# Sensora
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=Sensora&fontSize=70&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=Discover%20•%20Identify%20•%20Diagnose%20•%20Monitor&descAlignY=58&descSize=20" width="100%"/>
 
-### Discover • Identify • Diagnose • Monitor
+<a href="https://github.com/Sanjay67789/sensora">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=3000&pause=1000&color=38BDF8&center=true&vCenter=true&width=650&lines=Open-Source+Hardware+Discovery+Framework;Diagnose+I%C2%B2C+%7C+SPI+%7C+UART+%7C+1-Wire+devices;Built+for+Embedded+Linux" alt="Typing SVG" />
+</a>
 
 A modern open-source hardware discovery, diagnostics, and management framework for Embedded Linux.
 
@@ -477,5 +479,7 @@ https://github.com/Sanjay67789
 ### ⭐ If you find Sensora useful, please consider giving the repository a star.
 
 Built with ❤️ for the Embedded Linux community.
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=100&section=footer" width="100%"/>
 
 </div>
