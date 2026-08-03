@@ -377,7 +377,6 @@ Currently in development
 
 ## Version 0.3
 
-- MQTT integration
 - JSON reports
 - HTML reports
 - YAML reports
